@@ -33,6 +33,8 @@ void initialize_grid(triangle **grid, int level, int value){
 }
 
 void initialize_multigrid(triangle *** mgrid, int levels, int value){
-
+  int i;
+  for(i=0;i<levels;i++)
+    initialize_grid(mgrid[i],i,value);
 }
 

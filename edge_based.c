@@ -20,6 +20,7 @@
 #include <math.h>
 #include "mytypes.h"
 #include "memory.h"
+#include "initialize.h"
 
 
 #define SIZE 5
@@ -28,6 +29,7 @@ int main(int argc, char **argv){
 
   triangle *** mgrid;
   mgrid = allocate_multigrid(SIZE);
+  initialize_multigrid(mgrid, SIZE,1.0);
   free_multigrid(mgrid,SIZE);
   return 0;
 }
