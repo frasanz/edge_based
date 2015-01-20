@@ -21,15 +21,21 @@
 #include "mytypes.h"
 #include "memory.h"
 #include "initialize.h"
+#include "screen.h"
 
 
-#define SIZE 5
+#define SIZE 4
 
 int main(int argc, char **argv){
 
   triangle *** mgrid;
   mgrid = allocate_multigrid(SIZE);
-  initialize_multigrid(mgrid, SIZE,1.0);
+  initialize_multigrid_files(mgrid, SIZE);
+  print_multigrid(mgrid,SIZE);
+  initialize_multigrid_columns(mgrid, SIZE);
+  print_multigrid(mgrid,SIZE);
+  initialize_multigrid_levels(mgrid, SIZE);
+  print_multigrid(mgrid,SIZE);
   free_multigrid(mgrid,SIZE);
   return 0;
 }
