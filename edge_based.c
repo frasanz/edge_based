@@ -18,16 +18,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <strings.h>
 #include "mytypes.h"
 #include "memory.h"
 #include "initialize.h"
 #include "screen.h"
+#include "test.h"
+#include "helper.h"
 
 
 #define SIZE 4
 
 int main(int argc, char **argv){
-
+  if(checkCmdLineFlag(argc, (const char **)argv, "test")){
+    run_test();
+    return 0;
+  }
   triangle *** mgrid;
   mgrid = allocate_multigrid(SIZE);
   initialize_multigrid_files(mgrid, SIZE);

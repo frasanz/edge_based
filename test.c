@@ -17,45 +17,41 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#define DIM 15
+#include <math.h>
+#include <string.h>
+#include <strings.h>
+#include "mytypes.h"
+#include "memory.h"
+#include "initialize.h"
+#include "screen.h"
+#include "test.h"
 
-typedef struct {
-  double edge_u[3];
-  double edge_v[3];
-  double edge_f[3];
-} triangle;
 
 
 
-int main(){
-  int i,j,k;
-  triangle *** a3d;
-  a3d = (triangle ***)malloc(DIM * sizeof(triangle**));
-  for(i=0; i<DIM;i++){
-    a3d[i] = (triangle **)malloc(DIM * sizeof(triangle*));
-    for(j=0;j<DIM;j++){
-      a3d[i][j] = (triangle *)malloc((DIM-j)*sizeof(triangle));
-      for(k=0;k<DIM-j;k++){
-        a3d[i][j][k].edge_u[0]=1.0*j;
-      }
-    }
+void run_test(){
+
+  /* We're going to build a 10 levels multigrid
+   * to run some tests */
+  int size=10;
+  int i;
+
+  printf("[TESTS]\n\n");
+  triangle *** mgrid;
+  
+  /* TEST #1, Allocating and deallocating mgrid */
+  printf("\t[TEST#1] Allocating and deallocating %d levels, %d times\n",size,10);
+  for(i=0;i<10;i++){
+    mgrid=allocate_multigrid(size);
+    free_multigrid(mgrid,size);
   }
-  for(i=0;i<DIM;i++){
-    printf("\n%d",i);
-    for(j=0;j<DIM;j++){
-      printf("\n\t%d\n\t\t",j);
-      for(k=0;k<DIM-j;k++){
-        printf("%1.1f ",a3d[i][j][k].edge_u[0]);
-      }
-    }
-  }
+  /* if we reach this point, everyting is ok, probably, as we're not using 
+   * memset the allocation actually doesn't nothing */
+  printf("\t[TEST#1] OK\n\n");
+  
 
-  // Trying to free
-  for(i=0;i<DIM;i++){
-    for(j=0;j<DIM;j++){
-      free(a3d[i][j]);
-    }
-    free(a3d[i]);
-  }
+  /* TEST #2, Initializing all grids with a predefined value */
+  printf("\t[TEST#2] Initializing all grids with a predefined value: %d\n",5);
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid(mgrid,size,5);
 }
-
