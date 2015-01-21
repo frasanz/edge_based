@@ -21,8 +21,8 @@
 
 #include "mytypes.h"
 
-void print_grid(triangle ** , int level);
-void print_multigrid(triangle ***, int levels);
+void print_grid(FILE *f, triangle ** , int level);
+void print_multigrid(FILE *f,triangle ***, int levels);
 
 #endif
 

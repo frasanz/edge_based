@@ -35,15 +35,6 @@ int main(int argc, char **argv){
     run_test();
     return 0;
   }
-  triangle *** mgrid;
-  mgrid = allocate_multigrid(SIZE);
-  initialize_multigrid_files(mgrid, SIZE);
-  print_multigrid(mgrid,SIZE);
-  initialize_multigrid_columns(mgrid, SIZE);
-  print_multigrid(mgrid,SIZE);
-  initialize_multigrid_levels(mgrid, SIZE);
-  print_multigrid(mgrid,SIZE);
-  free_multigrid(mgrid,SIZE);
   return 0;
 }
 
