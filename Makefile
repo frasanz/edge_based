@@ -4,8 +4,9 @@ DEFS=-Wall -g
 LIBS=-lm
                       
 all: edge_based
-edge_based: edge_based.c memory.o initialize.o screen.o test.o
-	$(CC) $(DEFS) edge_based.c initialize.o memory.o screen.o test.o -o edge_based  $(LIBS)
+edge_based: edge_based.c memory.o initialize.o screen.o test.o initialize_operator.o
+	$(CC) $(DEFS) edge_based.c initialize.o memory.o screen.o test.o \
+		initialize_operator.o -o edge_based  $(LIBS)
 
 memory.o: memory.c
 	$(CC) $(DEFS) -c memory.c -o memory.o $(LIBS)
@@ -18,6 +19,9 @@ screen.o: screen.c
 
 test.o: test.c
 	$(CC) $(DEFS) -c test.c -o test.o $(LIBS)
+
+initialize_operator.o: initialize_operator.c
+	$(CC) $(DEFS) -c initialize_operator.c -o initialize_operator.o $(LIBS)
                                                                                      
 clean:                                                                               
 	rm -f *.o edge_based

@@ -108,20 +108,20 @@ void initialize_multigrid_columns(triangle *** mgrid, int levels){
 void initialize_grid_random(triangle **grid, int level){
   int i,j,k;
   // generate different seed for random number                                     
-  time_t t;                                                                        
-  srand((unsigned) time(&t));                                                      
   for(i=0; i<pow(2,level);i++){
     for(j=0;j<pow(2,level)-i;j++){
       for(k=0;k<3;k++){
-        grid[i][j].u[k]= (double)(rand() & 0xFF) / 10.0f;
-        grid[i][j].v[k]= (double)(rand() & 0xFF) / 10.0f;
-        grid[i][j].f[k]= (double)(rand() & 0xFF) / 10.0f;
+        grid[i][j].u[k]= (double)(rand());
+        grid[i][j].v[k]= (double)(rand());
+        grid[i][j].f[k]= (double)(rand());
       }
     }
   }
 }
 void initialize_multigrid_random(triangle *** mgrid, int levels){
   int i=0;
+  time_t t;                                                                        
+  srand((unsigned) time(&t));                                                      
   for(i=0;i<levels;i++)
     initialize_grid_random(mgrid[i],i);
 }

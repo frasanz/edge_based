@@ -25,6 +25,7 @@
 #include "initialize.h"
 #include "screen.h"
 #include "test.h"
+#include "initialize_operator.h"
 
 
 
@@ -38,9 +39,10 @@ void run_test(){
   int triangles_alloc=0;
   const char * testoutput="test.out";
   FILE *f;
+  triangle *** mgrid;
+  _operator ** operators;
 
   printf("[TESTS]\n\n");
-  triangle *** mgrid;
   /* Calculating the memory needed */
   for(i=0;i<size;i++)
     triangles_alloc=triangles_alloc+3*(pow(2,i)*(pow(2,i)+1)/2);
@@ -167,5 +169,10 @@ void run_test(){
     fclose(f);
   }
   free_multigrid(mgrid,size);
+
+  size=10;
+  printf("\t[TEST #7] Initializing operators: -grad(div)+curl(rot) up to size %d\n",size);
+  initialize_operators(operators,"-grad(div)+curl(rot)",size);
+  printf("\t[TEST #7] OK\n\n");
 }
 
