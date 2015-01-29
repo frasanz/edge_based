@@ -17,7 +17,20 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "initialize_operator.h"
+
+_operator ** allocate_operators(const char * problem, int size){
+  int i;
+  _operator ** operators;
+  if(strcmp(problem,"-grad(div)+curl(rot)")==0){
+    operators=(_operator**)malloc(size*sizeof(_operator*));
+    for(i=0;i<size;i++){
+      operators[i]=(_operator*)malloc(9*sizeof(_operator));
+    }
+  }
+  return operators;
+}
 
 void initialize_operators(_operator ** operators, 
   const char * problem, 
@@ -33,14 +46,14 @@ void initialize_operators(_operator ** operators,
    *   3->wu
    *   ....
    *   */
-  operators=(_operator**)malloc(sizes*sizeof(_operator*));
   for(i=0;i<sizes;i++){
-    operators[i]=(_operator*)malloc(9*sizeof(_operator));
     initialize_operator(operators[i],problem,i);
   }
-
 }
 void initialize_operator(_operator  * oper, const char * problem, int size){
+
+  int i,j;
+  double inv_l2=1/(pow(2,size));
 
   if(strcmp(problem,"-grad(div)+curl(rot)")==0){
 
@@ -116,5 +129,18 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
     _operator rot_rot_ww={{{ 0, 0, 0},\
                            { 0, 8, 0},\
                            { 0, 0, 0}}};
+    for(i=0;i<3;i++){
+      for(j=0;j<3;j++){
+        oper[0].op[i][j]=inv_l2*(grad_div_uu.op[i][j]+rot_rot_uu.op[i][j]);
+        oper[1].op[i][j]=inv_l2*(grad_div_uv.op[i][j]+rot_rot_uv.op[i][j]);
+        oper[2].op[i][j]=inv_l2*(grad_div_uw.op[i][j]+rot_rot_uw.op[i][j]);
+        oper[3].op[i][j]=inv_l2*(grad_div_vu.op[i][j]+rot_rot_vu.op[i][j]);
+        oper[4].op[i][j]=inv_l2*(grad_div_vv.op[i][j]+rot_rot_vv.op[i][j]);
+        oper[5].op[i][j]=inv_l2*(grad_div_vw.op[i][j]+rot_rot_vw.op[i][j]);
+        oper[6].op[i][j]=inv_l2*(grad_div_wu.op[i][j]+rot_rot_wu.op[i][j]);
+        oper[7].op[i][j]=inv_l2*(grad_div_wv.op[i][j]+rot_rot_wv.op[i][j]);
+        oper[8].op[i][j]=inv_l2*(grad_div_ww.op[i][j]+rot_rot_ww.op[i][j]);
+      }
+    }
   }
 }

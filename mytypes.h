@@ -25,4 +25,8 @@ typedef struct {
   double f[3];
 } triangle;
 
+typedef struct {
+  double op[3][3];
+} _operator;
+
 #endif

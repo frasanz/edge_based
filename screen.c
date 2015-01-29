@@ -20,6 +20,12 @@
 #include <math.h>
 #include "screen.h"
 
+void print_multigrid(FILE *f, triangle *** mgrid, int levels){
+  int i;
+  for(i=0;i<levels;i++)
+    print_grid(f,mgrid[i],i);
+}
+
 /* Here, we can print each grid function in one triangle */
 void print_grid(FILE *f, triangle **grid, int level){
   int i,j,k;
@@ -51,9 +57,24 @@ void print_grid(FILE *f, triangle **grid, int level){
   }
 }
 
-void print_multigrid(FILE *f, triangle *** mgrid, int levels){
+void print_all_operators(FILE *f, _operator ** op, int levels){
   int i;
-  for(i=0;i<levels;i++)
-    print_grid(f,mgrid[i],i);
+  for(i=0;i<levels; i++){
+    fprintf(f,"\n---- Operators level %d ----\n",i);
+    print_level_operator(f,op[i],i);
+  }
 }
 
+
+void print_level_operator(FILE *f, _operator *oper, int level){
+  int i,j,k;
+  for(i=0;i<9;i++){
+      fprintf(f,"\n");
+    for(j=0;j<3;j++){
+      for(k=0;k<3;k++){
+        fprintf(f, "%1.3f ",oper[i].op[j][k]);
+      }
+      fprintf(f,"\n");
+    }
+  }
+}

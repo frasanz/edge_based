@@ -168,11 +168,33 @@ void run_test(){
     printf("\t[TEST#6] Ended\n\n");
     fclose(f);
   }
+
+  /* Initialize the last level, border = 0 */
+  printf("\t[TEST#7] Putting border=0 in level %d\n",size-1);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0); // 0=u, 1=v, 2=f
+  f = fopen (testoutput,"a");
+  if (f==NULL) {
+    printf("\t[TEST#7] Error opening file %s\n",testoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_multigrid(f,mgrid,size);
+    printf("\t[TEST#7] Ended\n\n");
+    fclose(f);
+  }
   free_multigrid(mgrid,size);
 
   size=10;
-  printf("\t[TEST #7] Initializing operators: -grad(div)+curl(rot) up to size %d\n",size);
+  printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",size);
+  operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
-  printf("\t[TEST #7] OK\n\n");
+  f = fopen(testoutput, "a");
+  if(f==NULL){
+    printf("\t[TEST#8] Error opening file %s\n", testoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_all_operators(f, operators, size);
+    printf("\t[TEST#8] Ended\n\n");
+    fclose(f);
+  }
 }
 

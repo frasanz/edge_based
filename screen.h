@@ -23,6 +23,8 @@
 
 void print_grid(FILE *f, triangle ** , int level);
 void print_multigrid(FILE *f,triangle ***, int levels);
+void print_all_operators(FILE *f, _operator** op, int levels);
+void print_level_operator(FILE *f, _operator* op, int level);
 
 #endif
 

@@ -19,8 +19,8 @@
 #ifndef _INITIALIZE_OPERATOR_H_
 #define _INITIALIZE_OPERATOR_H_
 
-#include "operators.h"
-
+#include "mytypes.h"
+_operator** allocate_operators(const char * problem, int sizes);
 void initialize_operators(_operator ** operators, const char * problem, int sizes);
 void initialize_operator(_operator * oper, const char * problem, int size);
 

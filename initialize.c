@@ -118,6 +118,18 @@ void initialize_grid_random(triangle **grid, int level){
     }
   }
 }
+
+void initialize_boundary(triangle **grid, int level, double value,int element){
+  int i,j;
+  int max=(int)(pow(2,level));
+  for(i=0;i<max;i++){
+    for(j=0;j<3;j++){
+      grid[i][0].u[j]=value;
+      grid[0][i].u[j]=value;
+      grid[i][max-i-1].u[j]=value;
+    }
+  }
+}
 void initialize_multigrid_random(triangle *** mgrid, int levels){
   int i=0;
   time_t t;                                                                        
