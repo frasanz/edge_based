@@ -26,6 +26,7 @@
 #include "screen.h"
 #include "test.h"
 #include "initialize_operator.h"
+#include "module.h"
 
 
 
@@ -73,9 +74,9 @@ void run_test(){
     for(j=0 ; j< pow(2,i); j++){
       for(k=0; k<pow(2,i)-j; k++){
         for(l=0; l<3; l++){
-          if(mgrid[i][j][k].u[l] != 5.0 ||
-             mgrid[i][j][k].v[l] != 5.0 ||
-             mgrid[i][j][k].f[l] != 5.0){
+          if(mgrid[i][j][k].function_u[l] != 5.0 ||
+             mgrid[i][j][k].function_v[l] != 5.0 ||
+             mgrid[i][j][k].function_f[l] != 5.0){
             printf("\t[TEST#2] Error in %d ->(%d %d)",i,j,k);
             exit(EXIT_FAILURE);
           }
@@ -84,6 +85,9 @@ void run_test(){
     }
   }
   /* if we're here, test #2 is ok */
+  printf("\t[TEST#2] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#2] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#2] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
   printf("\t[TEST#2] OK\n\n");
 
   /* TEST #3 Initializating all grid, each file has its identified value */
@@ -95,9 +99,9 @@ void run_test(){
     for(j=0 ; j< pow(2,i); j++){
       for(k=0; k<pow(2,i)-j; k++){
         for(l=0; l<3; l++){
-          if(mgrid[i][j][k].u[l] != 1.0*j ||
-             mgrid[i][j][k].v[l] != 1.0*j ||
-             mgrid[i][j][k].f[l] != 1.0*j){
+          if(mgrid[i][j][k].function_u[l] != 1.0*j ||
+             mgrid[i][j][k].function_v[l] != 1.0*j ||
+             mgrid[i][j][k].function_f[l] != 1.0*j){
             printf("\t[TEST#3] Error in %d ->(%d %d)",i,j,k);
             exit(EXIT_FAILURE);
           }
@@ -106,6 +110,9 @@ void run_test(){
     }
   }
   /* if we're here, test #3 is ok */
+  printf("\t[TEST#3] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#3] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#3] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
   printf("\t[TEST#3] OK\n\n");
 
   /* TEST #4 Initializating all grid, each column has its identified value */
@@ -117,9 +124,9 @@ void run_test(){
     for(j=0 ; j< pow(2,i); j++){
       for(k=0; k<pow(2,i)-j; k++){
         for(l=0; l<3; l++){
-          if(mgrid[i][j][k].u[l] != 1.0*k ||
-             mgrid[i][j][k].v[l] != 1.0*k ||
-             mgrid[i][j][k].f[l] != 1.0*k){
+          if(mgrid[i][j][k].function_u[l] != 1.0*k ||
+             mgrid[i][j][k].function_v[l] != 1.0*k ||
+             mgrid[i][j][k].function_f[l] != 1.0*k){
             printf("\t[TEST#4] Error in %d ->(%d %d)",i,j,k);
             exit(EXIT_FAILURE);
           }
@@ -128,6 +135,9 @@ void run_test(){
     }
   }
   /* if we're here, test #3 is ok */
+  printf("\t[TEST#4] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#4] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#4] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
   printf("\t[TEST#4] OK\n\n");
 
 
@@ -141,9 +151,9 @@ void run_test(){
     for(j=0 ; j< pow(2,i); j++){
       for(k=0; k<pow(2,i)-j; k++){
         for(l=0; l<3; l++){
-          if(mgrid[i][j][k].u[l] != 1.0*i ||
-             mgrid[i][j][k].v[l] != 1.0*i ||
-             mgrid[i][j][k].f[l] != 1.0*i){
+          if(mgrid[i][j][k].function_u[l] != 1.0*i ||
+             mgrid[i][j][k].function_v[l] != 1.0*i ||
+             mgrid[i][j][k].function_f[l] != 1.0*i){
             printf("\t[TEST#5] Error in %d ->(%d %d)",i,j,k);
             exit(EXIT_FAILURE);
           }
@@ -152,6 +162,9 @@ void run_test(){
     }
   }
   /* if we're here, test #3 is ok */
+  printf("\t[TEST#5] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#5] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#5] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
   printf("\t[TEST#5] OK\n\n");
   free_multigrid(mgrid,size);
 
@@ -165,6 +178,9 @@ void run_test(){
     exit(EXIT_FAILURE);
   } else {
     print_multigrid(f,mgrid,size);
+    printf("\t[TEST#6] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#6] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#6] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
     printf("\t[TEST#6] Ended\n\n");
     fclose(f);
   }
@@ -178,6 +194,9 @@ void run_test(){
     exit(EXIT_FAILURE);
   } else {
     print_multigrid(f,mgrid,size);
+    printf("\t[TEST#7] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#7] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#7] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
     printf("\t[TEST#7] Ended\n\n");
     fclose(f);
   }
@@ -197,4 +216,3 @@ void run_test(){
     fclose(f);
   }
 }
-

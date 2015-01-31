@@ -57,42 +57,42 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
 
   if(strcmp(problem,"-grad(div)+curl(rot)")==0){
 
-    _operator grad_div_uu={{{   0,   0,  0 },\
-                            {-2/3,-2/3,-2/3},\
-                            {   0,   0,   0}}};
+    _operator grad_div_uu={{{       0,       0,       0},\
+                            { 2.0/3.0,-4.0/3.0, 2.0/3.0},\
+                            {       0,       0,       0}}};
 
-    _operator grad_div_uv={{{   0,   0,   0},\
-                            {-2/3, 2/3,   0},\
-                            {   0, 2/3,-2/3}}};
+    _operator grad_div_uv={{{       0,       0,       0},\
+                            {-2.0/3.0, 2.0/3.0,       0},\
+                            {       0, 2.0/3.0,-2.0/3.0}}};
 
-    _operator grad_div_uw={{{   0,   0,   0},\
-                            {   0,-2/3,-2/3},\
-                            {   0, 2/3,-2/3}}};
+    _operator grad_div_uw={{{       0,       0,       0},\
+                            {       0,-2.0/3.0,-2.0/3.0},\
+                            {       0, 2.0/3.0,-2.0/3.0}}};
 
-    _operator grad_div_vu={{{-2/3, 2/3,   0},\
-                            {   0, 2/3,-2/3},\
-                            {   0,   0,   0}}};
+    _operator grad_div_vu={{{-2.0/3.0, 2.0/3.0,       0},\
+                            {       0, 2.0/3.0,-2.0/3.0},\
+                            {       0,       0,       0}}};
 
-    _operator grad_div_vv={{{ 2/3,   0,   0},\
-                            {   0,   0,   0},\
-                            {   0,   0,   0}}};
+    _operator grad_div_vv={{{ 2.0/3.0,       0,       0},\
+                            {       0,-4.0/3.0,       0},\
+                            {       0,       0, 2.0/3.0}}};
 
-    _operator grad_div_vw={{{   0, 2/3,   0},\
-                            {   0,-4/3,   0},\
-                            {   0,   0, 2/3}}};
+    _operator grad_div_vw={{{       0, 2.0/3.0,       0},\
+                            {       0,-2.0/3.0,-2.0/3.0},\
+                            {       0,       0, 2.0/3.0}}};
 
-    _operator grad_div_wu={{{-2/3, 2/3,   0},\
-                            { 2/3,-2/3,   0},\
-                            {   0,   0,   0}}};
+    _operator grad_div_wu={{{-2.0/3.0, 2.0/3.0,       0},\
+                            { 2.0/3.0,-2.0/3.0,       0},\
+                            {       0,       0,       0}}};
 
 
-    _operator grad_div_wv={{{ 2/3,   0,   0},\
-                            {-2/3,-2/3,   0},\
-                            {   0, 2/3,   0}}};
+    _operator grad_div_wv={{{ 2.0/3.0,       0,       0},\
+                            {-2.0/3.0,-2.0/3.0,       0},\
+                            {       0, 2.0/3.0,       0}}};
 
-    _operator grad_div_ww={{{   0, 2/3,   0},\
-                            {   0,-4/3,   0},\
-                            {   0, 2/3,   0}}};
+    _operator grad_div_ww={{{       0, 2.0/3.0,       0},\
+                            {       0,-4.0/3.0,       0},\
+                            {       0, 2.0/3.0,       0}}};
 
     _operator rot_rot_uu={{{ 0, 0, 0},\
                            { 0, 8, 0},\
@@ -131,15 +131,15 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                            { 0, 0, 0}}};
     for(i=0;i<3;i++){
       for(j=0;j<3;j++){
-        oper[0].op[i][j]=inv_l2*(grad_div_uu.op[i][j]+rot_rot_uu.op[i][j]);
-        oper[1].op[i][j]=inv_l2*(grad_div_uv.op[i][j]+rot_rot_uv.op[i][j]);
-        oper[2].op[i][j]=inv_l2*(grad_div_uw.op[i][j]+rot_rot_uw.op[i][j]);
-        oper[3].op[i][j]=inv_l2*(grad_div_vu.op[i][j]+rot_rot_vu.op[i][j]);
-        oper[4].op[i][j]=inv_l2*(grad_div_vv.op[i][j]+rot_rot_vv.op[i][j]);
-        oper[5].op[i][j]=inv_l2*(grad_div_vw.op[i][j]+rot_rot_vw.op[i][j]);
-        oper[6].op[i][j]=inv_l2*(grad_div_wu.op[i][j]+rot_rot_wu.op[i][j]);
-        oper[7].op[i][j]=inv_l2*(grad_div_wv.op[i][j]+rot_rot_wv.op[i][j]);
-        oper[8].op[i][j]=inv_l2*(grad_div_ww.op[i][j]+rot_rot_ww.op[i][j]);
+        oper[uu].op[i][j]=inv_l2*(-grad_div_uu.op[i][j]+rot_rot_uu.op[i][j]);
+        oper[uv].op[i][j]=inv_l2*(-grad_div_uv.op[i][j]+rot_rot_uv.op[i][j]);
+        oper[uw].op[i][j]=inv_l2*(-grad_div_uw.op[i][j]+rot_rot_uw.op[i][j]);
+        oper[vu].op[i][j]=inv_l2*(-grad_div_vu.op[i][j]+rot_rot_vu.op[i][j]);
+        oper[vv].op[i][j]=inv_l2*(-grad_div_vv.op[i][j]+rot_rot_vv.op[i][j]);
+        oper[vw].op[i][j]=inv_l2*(-grad_div_vw.op[i][j]+rot_rot_vw.op[i][j]);
+        oper[wu].op[i][j]=inv_l2*(-grad_div_wu.op[i][j]+rot_rot_wu.op[i][j]);
+        oper[wv].op[i][j]=inv_l2*(-grad_div_wv.op[i][j]+rot_rot_wv.op[i][j]);
+        oper[ww].op[i][j]=inv_l2*(-grad_div_ww.op[i][j]+rot_rot_ww.op[i][j]);
       }
     }
   }

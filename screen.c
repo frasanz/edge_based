@@ -36,21 +36,21 @@ void print_grid(FILE *f, triangle **grid, int level){
     fprintf(f,"\tu[%d]\n",i);
     for(j=0; j<pow(2,level);j++){
       for(k=0;k<pow(2,level)-j;k++){
-        fprintf(f,"%1.1e ",grid[j][k].u[i]);
+        fprintf(f,"%1.1e ",grid[j][k].function_u[i]);
       }
       fprintf(f,"\n");
     }
     fprintf(f,"\tv[%d]\n",i);
     for(j=0; j<pow(2,level);j++){
       for(k=0;k<pow(2,level)-j;k++){
-        fprintf(f,"%1.1e ",grid[j][k].v[i]);
+        fprintf(f,"%1.1e ",grid[j][k].function_v[i]);
       }
       fprintf(f,"\n");
     }
     fprintf(f,"\tf[%d]\n",i);
     for(j=0; j<pow(2,level);j++){
       for(k=0;k<pow(2,level)-j;k++){
-        fprintf(f,"%1.1e ",grid[j][k].f[i]);
+        fprintf(f,"%1.1e ",grid[j][k].function_f[i]);
       }
       fprintf(f,"\n");
     }

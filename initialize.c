@@ -26,17 +26,17 @@ void initialize_grid(triangle **grid, int level, int value){
   int i,j;
   for(i=0; i<pow(2,level); i++){
     for(j=0; j<pow(2,level)-i;j++){
-      grid[i][j].u[0]=1.0*value;
-      grid[i][j].u[1]=1.0*value;
-      grid[i][j].u[2]=1.0*value;
+      grid[i][j].function_u[edge_u]=1.0*value;
+      grid[i][j].function_u[edge_v]=1.0*value;
+      grid[i][j].function_u[edge_w]=1.0*value;
 
-      grid[i][j].v[0]=1.0*value;
-      grid[i][j].v[1]=1.0*value;
-      grid[i][j].v[2]=1.0*value;
+      grid[i][j].function_v[edge_u]=1.0*value;
+      grid[i][j].function_v[edge_v]=1.0*value;
+      grid[i][j].function_v[edge_w]=1.0*value;
 
-      grid[i][j].f[0]=1.0*value;
-      grid[i][j].f[1]=1.0*value;
-      grid[i][j].f[2]=1.0*value;
+      grid[i][j].function_f[edge_u]=1.0*value;
+      grid[i][j].function_f[edge_v]=1.0*value;
+      grid[i][j].function_f[edge_w]=1.0*value;
     }
   }
 }
@@ -58,17 +58,17 @@ void initialize_grid_files(triangle **grid, int level){
   int i,j;
   for(i=0; i<pow(2,level);i++){
     for(j=0; j<pow(2,level)-i; j++){
-      grid[i][j].u[0]=1.0*i;
-      grid[i][j].u[1]=1.0*i;
-      grid[i][j].u[2]=1.0*i;
+      grid[i][j].function_u[edge_u]=1.0*i;
+      grid[i][j].function_u[edge_v]=1.0*i;
+      grid[i][j].function_u[edge_w]=1.0*i;
 
-      grid[i][j].v[0]=1.0*i;
-      grid[i][j].v[1]=1.0*i;
-      grid[i][j].v[2]=1.0*i;
+      grid[i][j].function_v[edge_u]=1.0*i;
+      grid[i][j].function_v[edge_v]=1.0*i;
+      grid[i][j].function_v[edge_w]=1.0*i;
 
-      grid[i][j].f[0]=1.0*i;
-      grid[i][j].f[1]=1.0*i;
-      grid[i][j].f[2]=1.0*i;
+      grid[i][j].function_f[edge_u]=1.0*i;
+      grid[i][j].function_f[edge_v]=1.0*i;
+      grid[i][j].function_f[edge_w]=1.0*i;
 
     }
   }
@@ -84,17 +84,17 @@ void initialize_grid_columns(triangle **grid, int level){
   int i,j;
   for(i=0; i<pow(2,level);i++){
     for(j=0; j<pow(2,level)-i; j++){
-      grid[i][j].u[0]=1.0*j;
-      grid[i][j].u[1]=1.0*j;
-      grid[i][j].u[2]=1.0*j;
+      grid[i][j].function_u[edge_u]=1.0*j;
+      grid[i][j].function_u[edge_v]=1.0*j;
+      grid[i][j].function_u[edge_w]=1.0*j;
 
-      grid[i][j].v[0]=1.0*j;
-      grid[i][j].v[1]=1.0*j;
-      grid[i][j].v[2]=1.0*j;
+      grid[i][j].function_v[edge_u]=1.0*j;
+      grid[i][j].function_v[edge_v]=1.0*j;
+      grid[i][j].function_v[edge_w]=1.0*j;
 
-      grid[i][j].f[0]=1.0*j;
-      grid[i][j].f[1]=1.0*j;
-      grid[i][j].f[2]=1.0*j;
+      grid[i][j].function_f[edge_u]=1.0*j;
+      grid[i][j].function_f[edge_v]=1.0*j;
+      grid[i][j].function_f[edge_w]=1.0*j;
     }
   }
 }
@@ -111,22 +111,23 @@ void initialize_grid_random(triangle **grid, int level){
   for(i=0; i<pow(2,level);i++){
     for(j=0;j<pow(2,level)-i;j++){
       for(k=0;k<3;k++){
-        grid[i][j].u[k]= (double)(rand());
-        grid[i][j].v[k]= (double)(rand());
-        grid[i][j].f[k]= (double)(rand());
+        grid[i][j].function_u[k]= (double)(rand());
+        grid[i][j].function_v[k]= (double)(rand());
+        grid[i][j].function_f[k]= (double)(rand());
       }
     }
   }
 }
 
+/* Note, we're initializing boundary only in function_u */
 void initialize_boundary(triangle **grid, int level, double value,int element){
   int i,j;
   int max=(int)(pow(2,level));
   for(i=0;i<max;i++){
     for(j=0;j<3;j++){
-      grid[i][0].u[j]=value;
-      grid[0][i].u[j]=value;
-      grid[i][max-i-1].u[j]=value;
+      grid[i][0].function_u[j]=value;
+      grid[0][i].function_u[j]=value;
+      grid[i][max-i-1].function_u[j]=value;
     }
   }
 }
