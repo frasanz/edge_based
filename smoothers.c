@@ -46,7 +46,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
       temp2=0.0;
 
       for(l=0;l<3;l++){
-        for(j=0;j<3;j++){
+        for(m=0;m<3;m++){
           temp0=temp0+oper[0][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
           temp1=temp1+oper[0][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
           temp2=temp2+oper[0][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
@@ -59,7 +59,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
 
       /* Smoothing edge w */
       for(l=0;l<3;l++){
-        for(j=0;j<3;j++){
+        for(m=0;m<3;m++){
           temp0=temp0+oper[0][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
           temp1=temp1+oper[0][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
           temp2=temp2+oper[0][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
