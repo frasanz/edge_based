@@ -27,6 +27,7 @@
 #include "test.h"
 #include "initialize_operator.h"
 #include "module.h"
+#include "smoothers.h"
 
 
 
@@ -162,9 +163,12 @@ void run_test(){
     }
   }
   /* if we're here, test #3 is ok */
-  printf("\t[TEST#5] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-  printf("\t[TEST#5] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-  printf("\t[TEST#5] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#5] maximum value in last function_u(u,v,w) %f\n",
+      max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#5] maximum value in last function_v(u,v,w) %f\n",
+      max_of_triangle(mgrid[size-1],U,size-1));
+  printf("\t[TEST#5] maximum value in last function_f(u,v,w) %f\n",
+      max_of_triangle(mgrid[size-1],U,size-1));
   printf("\t[TEST#5] OK\n\n");
   free_multigrid(mgrid,size);
 
@@ -178,9 +182,12 @@ void run_test(){
     exit(EXIT_FAILURE);
   } else {
     print_multigrid(f,mgrid,size);
-    printf("\t[TEST#6] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-    printf("\t[TEST#6] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-    printf("\t[TEST#6] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#6] maximum value in last function_u(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#6] maximum value in last function_v(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#6] maximum value in last function_f(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
     printf("\t[TEST#6] Ended\n\n");
     fclose(f);
   }
@@ -194,16 +201,20 @@ void run_test(){
     exit(EXIT_FAILURE);
   } else {
     print_multigrid(f,mgrid,size);
-    printf("\t[TEST#7] maximum value in last function_u(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-    printf("\t[TEST#7] maximum value in last function_v(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
-    printf("\t[TEST#7] maximum value in last function_f(u,v,w) %f\n",max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#7] maximum value in last function_u(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#7] maximum value in last function_v(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
+    printf("\t[TEST#7] maximum value in last function_f(u,v,w) %f\n",
+        max_of_triangle(mgrid[size-1],U,size-1));
     printf("\t[TEST#7] Ended\n\n");
     fclose(f);
   }
   free_multigrid(mgrid,size);
 
   size=10;
-  printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",size);
+  printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
+      size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
   f = fopen(testoutput, "a");
@@ -215,4 +226,11 @@ void run_test(){
     printf("\t[TEST#8] Ended\n\n");
     fclose(f);
   }
+
+  printf("\t[TEST#9] Doing lexicographic smoother %d\n",size);
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid_random(mgrid,size);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0);
+  smooth_1(mgrid,size-1,operators);
+  printf("\t[TEST#9] Ended\n\n");
 }

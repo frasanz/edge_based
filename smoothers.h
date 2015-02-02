@@ -19,6 +19,8 @@
 #ifndef _SMOOTHERS_H_
 #define _SMOOTHERS_H_
 
-void smooth_1(triangle ***, int level);
+#include "mytypes.h"
+
+void smooth_1(triangle ***, int level, _operator ** oper);
 
 #endif
