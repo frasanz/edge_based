@@ -40,6 +40,7 @@ void run_test(){
   int i,j,k,l;
   int triangles_alloc=0;
   const char * testoutput="test.out";
+  const char * testoutput2="smooth.out";
   FILE *f;
   triangle *** mgrid;
   _operator ** operators;
@@ -212,7 +213,7 @@ void run_test(){
   }
   free_multigrid(mgrid,size);
 
-  size=10;
+  size=4;
   printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
       size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
@@ -231,6 +232,25 @@ void run_test(){
   mgrid=allocate_multigrid(size);
   initialize_multigrid_random(mgrid,size);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
-  smooth_1(mgrid,size-1,operators);
+  f = fopen (testoutput2,"w");
+  if (f==NULL) {
+    printf("\t[TEST#9] Error opening file %s\n",testoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_grid_u(f,mgrid[size-1],size-1);
+    fclose(f);
+  }
+  for(j=0;j<100;j++){
+    printf("%d\n",j);
+    smooth_1(mgrid,size-1,operators);
+  }
+  f = fopen (testoutput2,"a");
+  if (f==NULL) {
+    printf("\t[TEST#9] Error opening file %s\n",testoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_grid_u(f,mgrid[size-1],size-1);
+    fclose(f);
+  }
   printf("\t[TEST#9] Ended\n\n");
 }

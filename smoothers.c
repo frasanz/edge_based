@@ -30,42 +30,53 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
   double temp1 = 0.0;
   double temp2 = 0.0;
 
-  for(i=1;i<pow(2,level)-1;i++){ // For all files, interior points
-    for(j=1;j<pow(2,level-i)-1;j++){ // For all columns
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
+      temp0=0.0;
+      temp1=0.0;
+      temp2=0.0;
       /* Smoothing edge u */
       for(l=0;l<3;l++){
         for(m=0;m<3;m++){
-          temp0=temp0+oper[0][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
-          temp1=temp1+oper[0][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
-          temp2=temp2+oper[0][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+          if((l!=1) && (m!=1))
+            temp0=temp0-oper[0][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+          temp1=temp1-oper[0][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+          temp2=temp2-oper[0][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_u[edge_u]=temp0+temp1+temp2;
+      mgrid[level][i][j].function_u[edge_u]=(temp0+temp1+temp2)/oper[0][uu].op[1][1];
+    }
+  }
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<pow(2,level)-i-1;j++){ // For all columns
       temp0=0.0;
       temp1=0.0;
       temp2=0.0;
-
       for(l=0;l<3;l++){
         for(m=0;m<3;m++){
           temp0=temp0+oper[0][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
-          temp1=temp1+oper[0][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+          if((l!=1) && (m!=1))
+            temp1=temp1+oper[0][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
           temp2=temp2+oper[0][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_u[edge_v]=temp0+temp1+temp2;
+      mgrid[level][i][j].function_u[edge_v]=(temp0+temp1+temp2)/oper[0][vv].op[1][1];
+    }
+  }
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<pow(2,level)-i-1;j++){ // For all columns
       temp0=0.0;
       temp1=0.0;
       temp2=0.0;
-
-      /* Smoothing edge w */
       for(l=0;l<3;l++){
         for(m=0;m<3;m++){
           temp0=temp0+oper[0][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
           temp1=temp1+oper[0][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
-          temp2=temp2+oper[0][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+          if((l!=1) && (m!=1))
+            temp2=temp2+oper[0][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_u[edge_w]=temp0+temp1+temp2;
+      mgrid[level][i][j].function_u[edge_w]=(temp0+temp1+temp2)/oper[0][ww].op[1][1];
     }
   }
 }

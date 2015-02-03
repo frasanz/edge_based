@@ -66,7 +66,7 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                             {       0, 2.0/3.0,-2.0/3.0}}};
 
     _operator grad_div_uw={{{       0,       0,       0},\
-                            {       0,-2.0/3.0,-2.0/3.0},\
+                            {       0,-2.0/3.0, 2.0/3.0},\
                             {       0, 2.0/3.0,-2.0/3.0}}};
 
     _operator grad_div_vu={{{-2.0/3.0, 2.0/3.0,       0},\
@@ -94,41 +94,41 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                             {       0,-4.0/3.0,       0},\
                             {       0, 2.0/3.0,       0}}};
 
-    _operator rot_rot_uu={{{ 0, 0, 0},\
-                           { 0, 8, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_uu={{{   0,   0,   0},\
+                           {   0, 8.0,   0},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_uv={{{ 0, 0, 0},\
-                           { 0, 4, 0},\
-                           { 4, 0, 0}}};
+    _operator rot_rot_uv={{{   0,   0,   0},\
+                           {   0, 4.0,   0},\
+                           {   0, 4.0,   0}}};
 
-    _operator rot_rot_uw={{{ 0, 0, 0},\
-                           { 0,-4, 0},\
-                           { 0, 0,-4}}};
+    _operator rot_rot_uw={{{   0,   0,   0},\
+                           {   0,-4.0,   0},\
+                           {   0,   0,-4.0}}};
 
-    _operator rot_rot_vu={{{ 0,-4, 0},\
-                           { 0,-4, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_vu={{{   0,-4.0,   0},\
+                           {   0,-4.0,   0},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_vv={{{ 0, 0, 0},\
-                           { 0, 8, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_vv={{{   0,   0,   0},\
+                           {   0, 8.0,   0},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_vw={{{ 0, 0, 0},\
-                           { 0, 4, 4},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_vw={{{   0,   0,   0},\
+                           {   0,   4,   4},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_wu={{{-4, 0, 0},\
-                           { 0,-4, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_wu={{{-4.0,   0,   0},\
+                           {   0,-4.0,   0},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_wv={{{ 0, 0, 0},\
-                           { 4, 4, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_wv={{{   0,   0,   0},\
+                           { 4.0, 4.0,   0},\
+                           {   0,   0,   0}}};
 
-    _operator rot_rot_ww={{{ 0, 0, 0},\
-                           { 0, 8, 0},\
-                           { 0, 0, 0}}};
+    _operator rot_rot_ww={{{   0,   0,   0},\
+                           {   0, 8.0,   0},\
+                           {   0,   0,   0}}};
     for(i=0;i<3;i++){
       for(j=0;j<3;j++){
         oper[uu].op[i][j]=inv_l2*(-grad_div_uu.op[i][j]+rot_rot_uu.op[i][j]);
