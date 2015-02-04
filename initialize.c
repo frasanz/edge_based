@@ -111,9 +111,9 @@ void initialize_grid_random(triangle **grid, int level){
   for(i=0; i<pow(2,level);i++){
     for(j=0;j<pow(2,level)-i;j++){
       for(k=0;k<3;k++){
-        grid[i][j].function_u[k]= (double)(rand());
-        grid[i][j].function_v[k]= (double)(rand());
-        grid[i][j].function_f[k]= (double)(rand());
+        grid[i][j].function_u[k]= rand();
+        grid[i][j].function_v[k]= rand();
+        grid[i][j].function_f[k]= rand();
       }
     }
   }

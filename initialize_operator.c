@@ -106,8 +106,8 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                            {   0,-4.0,   0},\
                            {   0,   0,-4.0}}};
 
-    _operator rot_rot_vu={{{   0,-4.0,   0},\
-                           {   0,-4.0,   0},\
+    _operator rot_rot_vu={{{   0, 4.0,   0},\
+                           {   0, 4.0,   0},\
                            {   0,   0,   0}}};
 
     _operator rot_rot_vv={{{   0,   0,   0},\
@@ -115,7 +115,7 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                            {   0,   0,   0}}};
 
     _operator rot_rot_vw={{{   0,   0,   0},\
-                           {   0,   4,   4},\
+                           {   0,-4.0,-4.0},\
                            {   0,   0,   0}}};
 
     _operator rot_rot_wu={{{-4.0,   0,   0},\
@@ -123,7 +123,7 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                            {   0,   0,   0}}};
 
     _operator rot_rot_wv={{{   0,   0,   0},\
-                           { 4.0, 4.0,   0},\
+                           {-4.0,-4.0,   0},\
                            {   0,   0,   0}}};
 
     _operator rot_rot_ww={{{   0,   0,   0},\

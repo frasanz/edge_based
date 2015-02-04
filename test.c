@@ -240,7 +240,7 @@ void run_test(){
     print_grid_u(f,mgrid[size-1],size-1);
     fclose(f);
   }
-  for(j=0;j<100;j++){
+  for(j=0;j<1;j++){
     printf("%d\n",j);
     smooth_1(mgrid,size-1,operators);
   }
