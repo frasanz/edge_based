@@ -205,9 +205,9 @@ void run_test(){
     printf("\t[TEST#7] maximum value in last function_u(u,v,w) %f\n",
         max_of_triangle(mgrid[size-1],U,size-1));
     printf("\t[TEST#7] maximum value in last function_v(u,v,w) %f\n",
-        max_of_triangle(mgrid[size-1],U,size-1));
+        max_of_triangle(mgrid[size-1],V,size-1));
     printf("\t[TEST#7] maximum value in last function_f(u,v,w) %f\n",
-        max_of_triangle(mgrid[size-1],U,size-1));
+        max_of_triangle(mgrid[size-1],F,size-1));
     printf("\t[TEST#7] Ended\n\n");
     fclose(f);
   }
@@ -240,9 +240,11 @@ void run_test(){
     print_grid_u(f,mgrid[size-1],size-1);
     fclose(f);
   }
-  for(j=0;j<1;j++){
-    printf("%d\n",j);
+  for(j=0;j<100;j++){
     smooth_1(mgrid,size-1,operators);
+    printf("\t[TEST#9] iter %d: maximum value in last function_u(u,v,w) %f\n",
+        j,max_of_triangle(mgrid[size-1],U,size-1));
+
   }
   f = fopen (testoutput2,"a");
   if (f==NULL) {
