@@ -21,7 +21,7 @@
 
 #include "mytypes.h"
 
-void restrict_one(triangle ***mgrid, int level_inf);
+void restrict_one(triangle ***mgrid, int level_sup);
 
 #endif
 

@@ -19,10 +19,10 @@
 #include <math.h>
 #include "restrict.h"
 
-void restrict_one(triangle ***mgrid, int level_inf){
+void restrict_one(triangle ***mgrid, int level_sup){
   int i,j;
   int I,J;
-  int level_sup = level_inf+1;
+  int level_inf = level_sup-1;
   // loop over all interior points
   for(i=1;i<pow(2,level_inf)-1;i++){
     I=2*i;

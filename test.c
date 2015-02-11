@@ -29,6 +29,7 @@
 #include "module.h"
 #include "smoothers.h"
 #include "restrict.h"
+#include "interpolation.h"
 
 
 
@@ -43,6 +44,7 @@ void run_test(){
   const char * testoutput="test.out";
   const char * testoutput2="smooth.out";
   const char * testrestrictoutput="restrict.out";
+  const char * testinterpolateoutput="interpolate.out";
   FILE *f;
   triangle *** mgrid;
   _operator ** operators;
@@ -265,10 +267,10 @@ void run_test(){
   initialize_multigrid_random(mgrid,size);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
   initialize_grid(mgrid[size-2],size-2,0.0);
-  restrict_one(mgrid,size-2);
+  restrict_one(mgrid,size-1);
   f = fopen (testrestrictoutput,"w");
   if (f==NULL) {
-    printf("\t[TEST#9] Error opening file %s\n",testrestrictoutput);
+    printf("\t[TEST#10] Error opening file %s\n",testrestrictoutput);
     exit(EXIT_FAILURE);
   } else {
     print_grid_u(f,mgrid[size-1],size-1);
@@ -276,5 +278,23 @@ void run_test(){
     fclose(f);
   }
   printf("\t[TEST#10] Ended\n\n");
+  free_multigrid(mgrid,size);
+
+  printf("\t[TEST#11] Interpolation from %d to %d\n",size-2,size-1);
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid_random(mgrid,size);
+  initialize_boundary(mgrid[size-2],size-2,0.0,0);
+  initialize_grid(mgrid[size-1],size-1,0.0);
+  interpolate_one(mgrid,size-2);
+  f = fopen (testinterpolateoutput,"w");
+  if (f==NULL) {
+    printf("\t[TEST#11] Error opening file %s\n",testinterpolateoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_grid_u(f,mgrid[size-2],size-2);
+    print_grid_u(f,mgrid[size-1],size-1);
+    fclose(f);
+  }
+  printf("\t[TEST#11] Ended\n\n");
   free_multigrid(mgrid,size);
 }
