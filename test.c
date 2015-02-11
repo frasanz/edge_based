@@ -213,7 +213,7 @@ void run_test(){
   }
   free_multigrid(mgrid,size);
 
-  size=4;
+  size=9;
   printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
       size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
