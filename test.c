@@ -28,6 +28,7 @@
 #include "initialize_operator.h"
 #include "module.h"
 #include "smoothers.h"
+#include "restrict.h"
 
 
 
@@ -41,6 +42,7 @@ void run_test(){
   int triangles_alloc=0;
   const char * testoutput="test.out";
   const char * testoutput2="smooth.out";
+  const char * testrestrictoutput="restrict.out";
   FILE *f;
   triangle *** mgrid;
   _operator ** operators;
@@ -213,7 +215,7 @@ void run_test(){
   }
   free_multigrid(mgrid,size);
 
-  size=9;
+  size=5;
   printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
       size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
@@ -228,7 +230,7 @@ void run_test(){
     fclose(f);
   }
 
-  printf("\t[TEST#9] Doing lexicographic smoother %d\n",size);
+  printf("\t[TEST#9] Doing lexicographic smoother %d\n",size-1);
   mgrid=allocate_multigrid(size);
   initialize_multigrid_random(mgrid,size);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
@@ -240,7 +242,7 @@ void run_test(){
     print_grid_u(f,mgrid[size-1],size-1);
     fclose(f);
   }
-  for(j=0;j<100;j++){
+  for(j=0;j<1;j++){
     smooth_1(mgrid,size-1,operators);
     printf("\t[TEST#9] iter %d: maximum value in last function_u(u,v,w) %f\n",
         j,max_of_triangle(mgrid[size-1],U,size-1));
@@ -255,4 +257,24 @@ void run_test(){
     fclose(f);
   }
   printf("\t[TEST#9] Ended\n\n");
+  free_multigrid(mgrid,size);
+
+  size = 5;
+  printf("\t[TEST#10] Restriction from %d to %d\n",size-1, size-2);
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid_random(mgrid,size);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0);
+  initialize_grid(mgrid[size-2],size-2,0.0);
+  restrict_one(mgrid,size-2);
+  f = fopen (testrestrictoutput,"w");
+  if (f==NULL) {
+    printf("\t[TEST#9] Error opening file %s\n",testrestrictoutput);
+    exit(EXIT_FAILURE);
+  } else {
+    print_grid_u(f,mgrid[size-1],size-1);
+    print_grid_u(f,mgrid[size-2],size-2);
+    fclose(f);
+  }
+  printf("\t[TEST#10] Ended\n\n");
+  free_multigrid(mgrid,size);
 }
