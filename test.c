@@ -300,4 +300,21 @@ void run_test(){
 }
 
 void multigrid_two(){
+  int triangles_alloc=0;
+  int size=10;
+  int i;
+  triangle *** mgrid;
+  _operator ** operators;
+
+  /* Calculating the memory needed */
+  for(i=0;i<size;i++)
+    triangles_alloc=triangles_alloc+3*(pow(2,i)*(pow(2,i)+1)/2);
+  printf("\t[INFO] We will need %fMB for this test\n\n",
+      1.0*triangles_alloc*sizeof(triangle)/1024/1024);
+  /* Initializing operators */
+  printf("\t[INFO] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
+      size);
+  operators=allocate_operators("-grad(div)+curl(rot)",size);
+  initialize_operators(operators,"-grad(div)+curl(rot)",size);
+
 }

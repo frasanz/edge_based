@@ -34,7 +34,9 @@ int main(int argc, char **argv){
   if(checkCmdLineFlag(argc, (const char **)argv, "test")){
     run_test();
     return 0;
-  } else if(checkCmdLineFlag(argc, (const char **)argv, "multigrid_two")){
+  } 
+  if(checkCmdLineFlag(argc, (const char **)argv, "two")){
+    printf("\t[INFO] calling multigrid_two\n\n");
     multigrid_two();
     return 0;
   }
