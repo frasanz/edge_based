@@ -23,6 +23,7 @@
 
 /* This is only a test of the smoothing procedure
  * At this moment I don't have very clear anything
+ * TODO: include f?
  */
 void smooth_1(triangle *** mgrid, int level, _operator ** oper){
   int i,j,l,m;
