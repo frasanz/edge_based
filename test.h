@@ -20,6 +20,7 @@
 #define _TEST_H_
 
 void run_test();
+void multigrid_two();
 
 
 #endif
