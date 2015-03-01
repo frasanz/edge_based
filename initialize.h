@@ -28,6 +28,7 @@ void initialize_multigrid_files(triangle *** mgrid, int level);
 void initialize_grid_columns(triangle ** grid, int level);
 void initialize_multigrid_columns(triangle *** mgrid, int level);
 void initialize_grid_random(triangle **grid, int level);
+void initialize_grid_function_u_random(triangle **grid, int level);
 void initialize_multigrid_random(triangle ***grid, int levels);
 void initialize_boundary(triangle **grid, int level, double value, int element); 
 #endif

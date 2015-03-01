@@ -30,6 +30,8 @@
 #include "smoothers.h"
 #include "restrict.h"
 #include "interpolation.h"
+#include "defect.h"
+#include "correct.h"
 
 
 
@@ -301,8 +303,8 @@ void run_test(){
 
 void multigrid_two(){
   int triangles_alloc=0;
-  int size=10;
-  int i;
+  int size=5;
+  int i,j;
   triangle *** mgrid;
   _operator ** operators;
 
@@ -311,10 +313,67 @@ void multigrid_two(){
     triangles_alloc=triangles_alloc+3*(pow(2,i)*(pow(2,i)+1)/2);
   printf("\t[INFO] We will need %fMB for this test\n\n",
       1.0*triangles_alloc*sizeof(triangle)/1024/1024);
+
   /* Initializing operators */
   printf("\t[INFO] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
       size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
+  /* Allocating memory*/
+  printf("\t[INFO] Allocating memory up to %d  levels\n",10);
+  mgrid=allocate_multigrid(size);
+
+  /* Initializing all grids with predefinied 0 value */
+  printf("\t[INFO] Initializing all grids with a predefined value: %d\n",0); 
+  initialize_multigrid(mgrid, size,0);
+
+  /* Initializing las grid function_u random */
+  printf("\t[INFO] Initializing last grid function_u random\n");
+  initialize_grid_function_u_random(mgrid[size-1],size-1);
+
+  /* Initializing the boundary in the function_u */
+  printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0);
+
+  /* The initialization is done, at this point we're going to start
+   * with the two-levels multigrid 
+   */
+  /* Pre-smooth u_m, f_m -> u_m */
+
+  for(i=0;i<10;i++){
+    printf("\t[INFO] Pre-smoothing\n");
+    smooth_1(mgrid, size-1, operators);
+
+    /* Compute the defect u_m, f_m -> v_m*/
+    printf("\t[INFO] Computing the defect\n");
+    compute_defect(mgrid, size-1, operators);
+
+    /* Restrict the defect v_m -> f_m-1 */
+    printf("\t[INFO] Restrict the defect\n");
+    restrict_one(mgrid, size-1);
+
+    /* Compute the solution in the lowest level -> u_m-1,
+     * in this case we're going to do 10 iteration of the 
+     * smoothing procedure, starting with a random value */
+    initialize_grid_function_u_random(mgrid[size-2],size-2);
+    initialize_boundary(mgrid[size-2],size-2,0.0,0);
+    for(j=0;j<10;j++){
+      smooth_1(mgrid,size-2,operators);
+    }
+
+    /* Interpolate u_m-1 -> v_m */
+    interpolate_one(mgrid,size-2);
+
+    /* Corrected solution u_m, v_m -> u_m */
+    correct_one(mgrid, size-1);
+
+    /* Post-smooth u_m, f_m -> u_m */
+    smooth_1(mgrid, size-1, operators);
+
+    /* Compute the defect to check u_m, f_m -> v_m */
+    compute_defect(mgrid, size-1, operators);
+    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f\n",
+        j,max_of_triangle(mgrid[size-1],V,size-1));
+  }
 }
