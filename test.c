@@ -353,8 +353,12 @@ void multigrid_two(){
 
 
     /* Restrict the defect v_m -> f_m-1 */
-    //printf("\t[INFO] Restrict the defect\n");
-    //restrict_one(mgrid, size-1);
+    printf("\t[INFO] Restrict the defect\n");
+    restrict_one(mgrid, size-1);
+    printf("\t[INFO] iter %d: maximum value in last function_f(u,v,w) %f\n",
+        i,max_of_triangle(mgrid[size-2],F,size-2));
+
+
 
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
@@ -367,17 +371,17 @@ void multigrid_two(){
     //}
 
     /* Interpolate u_m-1 -> v_m */
-    interpolate_one(mgrid,size-2);
+    //interpolate_one(mgrid,size-2);
 
     /* Corrected solution u_m, v_m -> u_m */
-    correct_one(mgrid, size-1);
+    //correct_one(mgrid, size-1);
 
     /* Post-smooth u_m, f_m -> u_m */
-    smooth_1(mgrid, size-1, operators);
+    //smooth_1(mgrid, size-1, operators);
 
     /* Compute the defect to check u_m, f_m -> v_m */
-    compute_defect(mgrid, size-1, operators);
-    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f\n",
-        i,max_of_triangle(mgrid[size-1],V,size-1));
+    //compute_defect(mgrid, size-1, operators);
+    //printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f\n",
+    //    i,max_of_triangle(mgrid[size-1],V,size-1));
   }
 }
