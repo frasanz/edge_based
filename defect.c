@@ -71,7 +71,7 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
           temp2=temp2+oper[0][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_u[edge_w]=
+      mgrid[level][i][j].function_v[edge_w]=
         mgrid[level][i][j].function_f[edge_w]+(temp0+temp1+temp2);
     }
   }
