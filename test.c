@@ -312,6 +312,8 @@ void run_test(){
     triangle *** mgrid;
     _operator ** operators;
     FILE *f;
+    double defect_ant=1.0;
+    double defect=1.0;
     const char * testrestrictoutput="two.out";
 
     /* Open F file for output */
@@ -359,24 +361,18 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<10;i++){
+  for(i=0;i<15;i++){
     printf("\t[INFO] Pre-smoothing\n");
     smooth_1(mgrid, size-1, operators);
 
     /* Compute the defect u_m, f_m -> v_m*/
     printf("\t[INFO] Computing the defect\n");
     compute_defect(mgrid, size-1, operators);
-    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %e\n",
-        i,max_of_triangle(mgrid[size-1],V,size-1));
-    print_grid_v(f,mgrid[size-1],size-1);
 
 
     /* Restrict the defect v_m -> f_m-1 */
     printf("\t[INFO] Restrict the defect\n");
     restrict_one(mgrid, size-1);
-    printf("\t[INFO] iter %d: maximum value in last function_f(u,v,w) %e\n",
-        i,max_of_triangle(mgrid[size-2],F,size-2));
-    print_grid_f(f,mgrid[size-2],size-2);
 
 
 
@@ -400,8 +396,10 @@ void run_test(){
 
     /* Compute the defect to check u_m, f_m -> v_m */
     compute_defect(mgrid, size-1, operators);
-    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f\n",
-          i,max_of_triangle(mgrid[size-1],V,size-1));
-    fclose(f);
+    defect_ant=defect;
+    defect=max_of_triangle(mgrid[size-1],V,size-1);
+    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
+          i,defect, defect/defect_ant);
   }
+  fclose(f);
 }
