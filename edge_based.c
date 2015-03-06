@@ -40,6 +40,12 @@ int main(int argc, char **argv){
     multigrid_two();
     return 0;
   }
+  if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigrid")){
+    printf("\t[INFO] calling firstmultigrid\n\n");
+    firstmultigrid();
+    return 0;
+  }
+
   return 0;
 }
 

@@ -21,6 +21,8 @@
 
 void run_test();
 void multigrid_two();
+void firstmultigrid();
+double firstmultigrid_loop(triangle ***, _operator **, int, int);
 
 
 #endif

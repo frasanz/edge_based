@@ -336,7 +336,7 @@ void run_test(){
     initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
     /* Allocating memory*/
-    printf("\t[INFO] Allocating memory up to %d  levels\n",10);
+    printf("\t[INFO] Allocating memory up to %d  levels\n",size);
     mgrid=allocate_multigrid(size);
 
     /* Initializing all grids with predefinied 0 value */
@@ -346,14 +346,10 @@ void run_test(){
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
     initialize_grid_function_u_random(mgrid[size-1],size-1);
-    print_grid_u(f,mgrid[size-1],size-1);
-    fflush(f);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
     initialize_boundary(mgrid[size-1],size-1,0.0,0);
-    print_grid_u(f,mgrid[size-1],size-1);
-    fflush(f);
 
 
     /* The initialization is done, at this point we're going to start
@@ -361,17 +357,14 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<15;i++){
-    printf("\t[INFO] Pre-smoothing\n");
+  for(i=0;i<30;i++){
     smooth_1(mgrid, size-1, operators);
 
     /* Compute the defect u_m, f_m -> v_m*/
-    printf("\t[INFO] Computing the defect\n");
     compute_defect(mgrid, size-1, operators);
 
 
     /* Restrict the defect v_m -> f_m-1 */
-    printf("\t[INFO] Restrict the defect\n");
     restrict_one(mgrid, size-1);
 
 
@@ -403,3 +396,87 @@ void run_test(){
   }
   fclose(f);
 }
+
+void firstmultigrid(){
+
+  printf("\t[INFO] Called first multigrid\n");
+  int triangles_alloc=0;
+  int size=5;
+  int i;
+  triangle *** mgrid;
+  _operator ** operators;
+  FILE *f;
+  double defect_ant=1.0;
+  double defect=1.0;
+  const char * fileoutput="firstmultigrid.out";
+
+  /* Open output file */
+  f = fopen(fileoutput, "w");
+  if (f==NULL){
+    printf("\t[INFO] Error opening file %s\n",fileoutput);
+    exit(EXIT_FAILURE);
+  }
+
+  /* Calculating needed memory */
+  for(i=0;i<size;i++){
+    triangles_alloc=triangles_alloc+3*(pow(2,i)*(pow(2,i)+1)/2);
+  }
+  printf("\t[INFO] We'll need %fMB for this test\n\n",
+     1.0*triangles_alloc*sizeof(triangle)/1024/1024);
+
+  /* Initializing operators */
+  printf("\t[INFO] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
+      size);
+  operators=allocate_operators("-grad(div)+curl(rot)",size);
+  initialize_operators(operators, "-grad(div)+curl(rot)",size);
+
+  /* Allocating memory */
+  printf("\t[INFO] Allocating memory up to %d levels\n",size);
+  mgrid=allocate_multigrid(size);
+
+  /* Initializing all grids with predefinied 0 value */
+  printf("\t[INFO] Initializing all grids with a predefinied value: %d\n",0);
+  initialize_multigrid(mgrid,size,0);
+
+  /* Initializing las grid function_u random */
+  printf("\t[INFO] Initializing last grid function_u random\n");
+  initialize_grid_function_u_random(mgrid[size-1],size-1);
+
+  /* Initializing the boundary in the function_u */
+  printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0);
+
+  /* Here is the main loop */
+  for(i=0;i<10;i++){
+    defect_ant=defect;
+    defect=firstmultigrid_loop(mgrid,operators,size,size-1);
+    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
+          i,defect, defect/defect_ant);
+  }
+}
+
+double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, int level){
+  int j;
+  printf("\t[INFO] in level %d",level);
+  smooth_1(mgrid, level, operators);
+  compute_defect(mgrid,level, operators);
+  restrict_one(mgrid, level);
+  if(level==2){
+    initialize_grid_function_u_random(mgrid[level],level);
+    initialize_boundary(mgrid[level],level,0.0,0);
+    for(j=0;j<10;j++){
+      smooth_1(mgrid,level,operators);
+    }
+  }else{
+    firstmultigrid_loop(mgrid, operators, size, level-1);
+  }
+  interpolate_one(mgrid,level-1);
+  correct_one(mgrid,level);
+  smooth_1(mgrid,level, operators);
+  if(level==size-1){
+    compute_defect(mgrid,level,operators);
+    return max_of_triangle(mgrid[level],V,level);
+  }
+  return 0.0;
+}
+
