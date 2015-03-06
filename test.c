@@ -275,8 +275,8 @@ void run_test(){
     printf("\t[TEST#10] Error opening file %s\n",testrestrictoutput);
     exit(EXIT_FAILURE);
   } else {
-    print_grid_u(f,mgrid[size-1],size-1);
-    print_grid_u(f,mgrid[size-2],size-2);
+    print_grid_v(f,mgrid[size-1],size-1);
+    print_grid_f(f,mgrid[size-2],size-2);
     fclose(f);
   }
   printf("\t[TEST#10] Ended\n\n");

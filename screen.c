@@ -25,12 +25,12 @@ void print_multigrid(FILE *f, triangle *** mgrid, int levels){
   for(i=0;i<levels;i++)
     print_grid(f,mgrid[i],i);
 }
-/* Here, we can print each grid function in one triangle */
+/* here, we can print each grid function in one triangle */
 void print_grid_u(FILE *f, triangle **grid, int level){
   int i,j,k;
-  /* For this level, and for each grid function,
+  /* for this level, and for each grid function,
    *  we have three grids */
-  fprintf(f,"[PRINT] Grid function u at level %d\n",level);
+  fprintf(f,"[print] grid function u at level %d\n",level);
   for(i=0;i<3;i++){
     fprintf(f,"\tu[%d]\n",i);
     for(j=0; j<pow(2,level);j++){
@@ -41,6 +41,42 @@ void print_grid_u(FILE *f, triangle **grid, int level){
     }
   }
 }
+/* here, we can print each grid function in one triangle */
+void print_grid_v(FILE *f, triangle **grid, int level){
+  int i,j,k;
+  /* for this level, and for each grid function,
+   *  we have three grids */
+  fprintf(f,"[print] grid function v at level %d\n",level);
+  for(i=0;i<3;i++){
+    fprintf(f,"\tu[%d]\n",i);
+    for(j=0; j<pow(2,level);j++){
+      for(k=0;k<pow(2,level)-j;k++){
+        fprintf(f,"%1.1e ",grid[j][k].function_v[i]);
+      }
+      fprintf(f,"\n");
+    }
+  }
+}
+/* here, we can print each grid function in one triangle */
+void print_grid_f(FILE *f, triangle **grid, int level){
+  int i,j,k;
+  /* for this level, and for each grid function,
+   *  we have three grids */
+  fprintf(f,"[print] grid function f at level %d\n",level);
+  for(i=0;i<3;i++){
+    fprintf(f,"\tu[%d]\n",i);
+    for(j=0; j<pow(2,level);j++){
+      for(k=0;k<pow(2,level)-j;k++){
+        fprintf(f,"%1.1e ",grid[j][k].function_f[i]);
+      }
+      fprintf(f,"\n");
+    }
+  }
+}
+
+
+
+
 
 
 
