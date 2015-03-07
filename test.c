@@ -443,11 +443,11 @@ void firstmultigrid(){
   initialize_grid_function_u_random(mgrid[size-1],size-1);
 
   /* Initializing the boundary in the function_u */
-  printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
+  printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size-1);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
   /* Here is the main loop */
-  for(i=0;i<10;i++){
+  for(i=0;i<1;i++){
     defect_ant=defect;
     defect=firstmultigrid_loop(mgrid,operators,size,size-1);
     printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
@@ -457,26 +457,27 @@ void firstmultigrid(){
 
 double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, int level){
   int j;
-  printf("\t[INFO] in level %d",level);
-  smooth_1(mgrid, level, operators);
+  printf("\t[INFO] in level %d\n",level);
+  /*smooth_1(mgrid, level, operators);
   compute_defect(mgrid,level, operators);
-  restrict_one(mgrid, level);
-  if(level==2){
-    initialize_grid_function_u_random(mgrid[level],level);
-    initialize_boundary(mgrid[level],level,0.0,0);
-    for(j=0;j<10;j++){
-      smooth_1(mgrid,level,operators);
-    }
+  restrict_one(mgrid, level);*/
+  if(level==3){
+    //nitialize_grid_function_u_random(mgrid[level-1],level-1);
+    //initialize_boundary(mgrid[level-1],level-1,0.0,0);
+      //for(j=0;j<10;j++){
+      //smooth_1(mgrid,level-1,operators);
+      printf("\t\t[INFO] Down level\n");
   }else{
+    printf("Recall multigrid in from level %d to level %d\n",level, level-1);
     firstmultigrid_loop(mgrid, operators, size, level-1);
   }
-  interpolate_one(mgrid,level-1);
-  correct_one(mgrid,level);
+  //interpolate_one(mgrid,level-1);
+  /*correct_one(mgrid,level);
   smooth_1(mgrid,level, operators);
   if(level==size-1){
     compute_defect(mgrid,level,operators);
     return max_of_triangle(mgrid[level],V,level);
-  }
+  }*/
   return 0.0;
 }
 
