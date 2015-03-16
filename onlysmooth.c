@@ -35,7 +35,9 @@
 
 void onlysmooth(){
   int size=5;
-  int i,j;
+  int i;
+  double val=1.0;
+  double val_ant=1.0;
   triangle *** mgrid;
   _operator ** operators;
 
@@ -51,7 +53,16 @@ void onlysmooth(){
   /* Initializing the boundary in the function_u */
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
+  /* Initializing operators */
+  operators=allocate_operators("-grad(div)+curl(rot)",size);
+  initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
+  for(i=0;i<100;i++){
+    smooth_1(mgrid, size-1, operators);
+    val_ant=val;
+    val=max_of_triangle(mgrid[size-1],U,size-1);
+    printf("\t[ONLYSMOOTH] iter %d: ratio in function_u %f\n", i,val/val_ant);
+  }
   
-  free_multigrid(size);
+  free_multigrid(mgrid,size);
 }
