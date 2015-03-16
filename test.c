@@ -374,7 +374,7 @@ void run_test(){
      * smoothing procedure, starting with a random value */
     initialize_grid_function_u_random(mgrid[size-2],size-2);
     initialize_boundary(mgrid[size-2],size-2,0.0,0);
-    for(j=0;j<10;j++){
+    for(j=0;j<100;j++){
       smooth_1(mgrid,size-2,operators);
     }
 
@@ -401,7 +401,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=5;
+  int size=7;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -447,7 +447,7 @@ void firstmultigrid(){
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
   /* Here is the main loop */
-  for(i=0;i<1;i++){
+  for(i=0;i<1000;i++){
     defect_ant=defect;
     defect=firstmultigrid_loop(mgrid,operators,size,size-1);
     printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
@@ -457,27 +457,25 @@ void firstmultigrid(){
 
 double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, int level){
   int j;
-  printf("\t[INFO] in level %d\n",level);
-  /*smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
   compute_defect(mgrid,level, operators);
-  restrict_one(mgrid, level);*/
+  restrict_one(mgrid, level);
+
   if(level==3){
-    //nitialize_grid_function_u_random(mgrid[level-1],level-1);
-    //initialize_boundary(mgrid[level-1],level-1,0.0,0);
-      //for(j=0;j<10;j++){
-      //smooth_1(mgrid,level-1,operators);
-      printf("\t\t[INFO] Down level\n");
+    initialize_grid_function_u_random(mgrid[level-1],level-1);
+    initialize_boundary(mgrid[level-1],level-1,0.0,0);
+    for(j=0;j<200;j++)
+      smooth_1(mgrid,level-1,operators);
   }else{
-    printf("Recall multigrid in from level %d to level %d\n",level, level-1);
-    firstmultigrid_loop(mgrid, operators, size, level-1);
-  }
-  //interpolate_one(mgrid,level-1);
-  /*correct_one(mgrid,level);
-  smooth_1(mgrid,level, operators);
-  if(level==size-1){
-    compute_defect(mgrid,level,operators);
-    return max_of_triangle(mgrid[level],V,level);
-  }*/
-  return 0.0;
+      firstmultigrid_loop(mgrid, operators, size, level-1);
+    }
+    interpolate_one(mgrid,level-1);
+    correct_one(mgrid,level);
+    smooth_1(mgrid,level, operators);
+    if(level==size-1){
+      compute_defect(mgrid,level,operators);
+      return max_of_triangle(mgrid[level],V,level);
+    }
+    return 0.0;
 }
 

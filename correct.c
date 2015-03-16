@@ -23,12 +23,18 @@
 void correct_one(triangle *** mgrid, int level){
   int i,j;
 
-  for(i=0;i<(int)(pow(2,level)-1);i++){
-    for(j=0;j<(int)(pow(2,level)-1);j++){
-      mgrid[level][i][j].function_u[edge_u]+=mgrid[level][i][j].function_v[edge_u];
-      mgrid[level][i][j].function_u[edge_u]+=mgrid[level][i][j].function_v[edge_u];
-      mgrid[level][i][j].function_u[edge_u]+=mgrid[level][i][j].function_v[edge_u];
-    }
+  for(i=1;i<(int)(pow(2,level)-1);i++){
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){
+      mgrid[level][i][j].function_u[edge_u]=
+          mgrid[level][i][j].function_u[edge_u]+
+        mgrid[level][i][j].function_v[edge_u];
+      mgrid[level][i][j].function_u[edge_v]=
+        mgrid[level][i][j].function_u[edge_v]+
+        mgrid[level][i][j].function_v[edge_v];
+      mgrid[level][i][j].function_u[edge_w]=
+        mgrid[level][i][j].function_u[edge_w]+
+        mgrid[level][i][j].function_v[edge_w];
+      }
   }
 }
 

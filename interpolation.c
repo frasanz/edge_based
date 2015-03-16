@@ -25,9 +25,9 @@ void interpolate_one(triangle*** mgrid, int level_inf){
   int I,J;
   int level_sup=level_inf+1;
   float value;
-  for(i=0;i<pow(2,level_inf);i++){
+  for(i=0;i<(int)(pow(2,level_inf));i++){
     I=2*i;
-    for(j=0;j<pow(2,level_inf)-i;j++){
+    for(j=0;j<(int)(pow(2,level_inf)-i-1);j++){
       J=2*j;
       /*** edge_u ***/
       value=mgrid[level_inf][i][j].function_u[edge_u];
@@ -35,7 +35,7 @@ void interpolate_one(triangle*** mgrid, int level_inf){
       mgrid[level_sup][I  ][J+1].function_v[edge_u]= value;
       mgrid[level_sup][I+1][J  ].function_v[edge_u]= value;
       if(i>0)
-        mgrid[level_sup][I-1][J+1].function_v[edge_u]= value;
+            mgrid[level_sup][I-1][J+1].function_v[edge_u]= value;
       /*** edge_v ***/
       value=mgrid[level_inf][i][j].function_u[edge_v];
       mgrid[level_sup][I  ][J  ].function_v[edge_v]= value;
@@ -49,9 +49,7 @@ void interpolate_one(triangle*** mgrid, int level_inf){
       mgrid[level_sup][I  ][J+1].function_v[edge_w]= value;
       mgrid[level_sup][I+1][J  ].function_v[edge_w]= value;
       if(j>0)
-        mgrid[level_sup][I+1][J-1].function_v[edge_w]= value;
-
-
+         mgrid[level_sup][I+1][J-1].function_v[edge_w]= value;
     }
   }
 }
