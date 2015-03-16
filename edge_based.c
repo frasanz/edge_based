@@ -26,6 +26,7 @@
 #include "screen.h"
 #include "test.h"
 #include "helper.h"
+#include "onlysmooth.h"
 
 
 #define SIZE 4
@@ -35,17 +36,24 @@ int main(int argc, char **argv){
     run_test();
     return 0;
   } 
-  if(checkCmdLineFlag(argc, (const char **)argv, "two")){
+  else if(checkCmdLineFlag(argc, (const char **)argv, "two")){
     printf("\t[INFO] calling multigrid_two\n\n");
     multigrid_two();
     return 0;
   }
-  if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigrid")){
+  else if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigrid")){
     printf("\t[INFO] calling firstmultigrid\n\n");
     firstmultigrid();
     return 0;
   }
-
+  else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmooth")){
+    printf("\t[INFO] calling onlysmooth\n\n");
+    onlysmooth();
+    return 0;
+  } else{
+    printf("\t[INFO] invalid option\n\n");
+    return -1;
+  }
   return 0;
 }
 

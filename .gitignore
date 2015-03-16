@@ -1,3 +1,4 @@
 *.o
 edge_based
 *.out
+*.swp
