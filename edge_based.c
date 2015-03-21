@@ -55,8 +55,11 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling test_draw\n\n");
     test_draw();
     return 0;
-  }
-  else{
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "test_restrict")){
+    printf("\t[INFO] calling test_restrict\n\n");
+    test_restrict();
+    return 0;
+  } else{
     printf("\t[INFO] invalid option\n\n");
     return -1;
   }

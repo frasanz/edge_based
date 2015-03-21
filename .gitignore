@@ -2,4 +2,4 @@
 edge_based
 *.out
 *.swp
-data.temp
+*.temp

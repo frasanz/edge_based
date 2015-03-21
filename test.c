@@ -483,10 +483,25 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, 
 void  test_draw(){
   printf("\t[INFO] Called test draw\n");
   triangle *** mgrid;
-  int size=7;
+  int size=5;
   mgrid=allocate_multigrid(size);
-  initialize_multigrid(mgrid, size, 5);
-  draw_triangle(mgrid[size-1], size-1,U,edge_u);
+  initialize_multigrid_columns(mgrid, size);
+  draw_triangle(mgrid[size-1], size-1,U,edge_u,"Test draw");
 }
 
+void test_restrict(){
+  printf("\t[INFO] Called test_restrict\n");
+  triangle *** mgrid;
+  int size=7;
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid_columns(mgrid,size);
+  draw_triangle(mgrid[size-1],size-1,V,edge_u,"V, edge_u level Up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_v,"V, edge_v level Up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_w,"V, edge_w level Up");
+  restrict_one(mgrid, size-1);
+  draw_triangle(mgrid[size-2],size-2,F,edge_u,"f, edge_u level down");
+  draw_triangle(mgrid[size-2],size-2,F,edge_v,"f, edge_v level down");
+  draw_triangle(mgrid[size-2],size-2,F,edge_w,"f, edge_w level down");
 
+
+}

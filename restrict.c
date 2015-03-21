@@ -54,4 +54,3 @@ void restrict_one(triangle ***mgrid, int level_sup){
     }
   }
 }
-

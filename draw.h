@@ -21,7 +21,7 @@
 
 #include "mytypes.h"
 
-void draw_triangle(triangle ** tri, int level, int function, int edge);
+void draw_triangle(triangle ** tri, int level, int function, int edge, char * title);
 
 #endif
 
