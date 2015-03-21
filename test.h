@@ -25,6 +25,8 @@ void firstmultigrid();
 double firstmultigrid_loop(triangle ***, _operator **, int, int);
 void test_draw();
 void test_restrict();
+void test_interpolate();
+void test_smooth();
 
 
 #endif

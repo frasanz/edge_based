@@ -366,9 +366,8 @@ void run_test(){
 
 
     /* Restrict the defect v_m -> f_m-1 */
+    initialize_grid(mgrid[size-2],size-2,0.0);
     restrict_one(mgrid, size-1);
-
-
 
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
@@ -495,6 +494,7 @@ void test_restrict(){
   int size=7;
   mgrid=allocate_multigrid(size);
   initialize_multigrid_columns(mgrid,size);
+  initialize_grid(mgrid[size-2],size-2,0.0);
   draw_triangle(mgrid[size-1],size-1,V,edge_u,"V, edge_u level Up");
   draw_triangle(mgrid[size-1],size-1,V,edge_v,"V, edge_v level Up");
   draw_triangle(mgrid[size-1],size-1,V,edge_w,"V, edge_w level Up");
@@ -502,6 +502,47 @@ void test_restrict(){
   draw_triangle(mgrid[size-2],size-2,F,edge_u,"f, edge_u level down");
   draw_triangle(mgrid[size-2],size-2,F,edge_v,"f, edge_v level down");
   draw_triangle(mgrid[size-2],size-2,F,edge_w,"f, edge_w level down");
-
-
 }
+
+void test_interpolate(){
+  printf("\t[INFO] Called test_interpolate\n");
+  triangle *** mgrid;
+  int size=7;
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid(mgrid,size,0);
+  initialize_grid_columns(mgrid[size-2],size-2);
+  draw_triangle(mgrid[size-2],size-2,U,edge_u,"U__edge_u__level_down");
+  draw_triangle(mgrid[size-2],size-2,U,edge_v,"U__edge_v__level_down");
+  draw_triangle(mgrid[size-2],size-2,U,edge_w,"U__edge_w__level_down");
+  interpolate_one(mgrid, size-2);
+  draw_triangle(mgrid[size-1],size-1,V,edge_u,"V__edge_u__level_up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_v,"V__edge_v__level_up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_w,"V__edge_w__level_up");
+}
+
+void test_smooth(){
+  printf("\t[INFO] Called test_smooth\n");
+  char title[256];
+  int i;
+  triangle *** mgrid;
+  int size=7;
+  _operator ** operators;
+
+  operators=allocate_operators("-grad(div)+curl(rot)",size);
+  initialize_operators(operators,"-grad(div)+curl(rot)",size);
+
+
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid(mgrid,size,0);
+  initialize_grid_function_u_random(mgrid[size-1],size-1);
+  initialize_boundary(mgrid[size-1],size-1,0.0,0);
+  draw_triangle(mgrid[size-1],size-1,U,edge_u,"U__edge_u_org");
+  for(i=0;i<100;i++){
+    smooth_1(mgrid,size-1,operators);
+    if(i%10==0){
+      sprintf(title,"%s_%d","U__edge_u_iter0",i);
+      draw_triangle(mgrid[size-1],size-1,U,edge_u,title);
+    }
+  }
+}
+

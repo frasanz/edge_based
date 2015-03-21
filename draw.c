@@ -30,7 +30,7 @@ void draw_triangle(triangle ** tri, int level, int function, int edge,char * tit
   char  command2[256];
   int i,j;
   sprintf(filename,"%s.%s",title,"temp");
-  sprintf(command1,"%s \"%s\""," set term wxt; set pm3d; set ticslevel 0; set title",title);
+  sprintf(command1,"%s \"%s\"","set ticslevel 0; set title",title);
   sprintf(command2,"%s '%s' u 1:2:3\n","splot",filename);
   char * commandsForGnuplot[] = {command1, command2};
   FILE * temp = fopen(filename, "w");

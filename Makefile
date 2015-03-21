@@ -51,4 +51,4 @@ draw.o: draw.c
 	$(CC) $(DEFS) -c draw.c -o draw.o $(LIBS)
                                                                                      
 clean:                                                                               
-	rm -f *.o edge_based
+	rm -f *.o *.temp *.out edge_based

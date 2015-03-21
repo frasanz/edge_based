@@ -59,7 +59,16 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling test_restrict\n\n");
     test_restrict();
     return 0;
-  } else{
+  } else if(checkCmdLineFlag(argc, (const char  **)argv, "test_interpolate")){
+    printf("\t[INFO] calling test_interpolate\n\n");
+    test_interpolate();
+    return 0;
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "test_smooth")){
+    printf("\t[INFO] calling test_smooth\n\n");
+    test_smooth();
+    return 0;
+  }
+  else{
     printf("\t[INFO] invalid option\n\n");
     return -1;
   }

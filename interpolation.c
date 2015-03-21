@@ -27,7 +27,7 @@ void interpolate_one(triangle*** mgrid, int level_inf){
   float value;
   for(i=0;i<(int)(pow(2,level_inf));i++){
     I=2*i;
-    for(j=0;j<(int)(pow(2,level_inf)-i-1);j++){
+    for(j=0;j<(int)(pow(2,level_inf)-i);j++){
       J=2*j;
       /*** edge_u ***/
       value=mgrid[level_inf][i][j].function_u[edge_u];
@@ -53,4 +53,3 @@ void interpolate_one(triangle*** mgrid, int level_inf){
     }
   }
 }
-

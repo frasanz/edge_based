@@ -34,7 +34,7 @@ void correct_one(triangle *** mgrid, int level){
       mgrid[level][i][j].function_u[edge_w]=
         mgrid[level][i][j].function_u[edge_w]+
         mgrid[level][i][j].function_v[edge_w];
-      }
+    }
   }
 }
 
