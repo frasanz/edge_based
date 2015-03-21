@@ -26,8 +26,6 @@ int main(){
   double xvals[NUM_POINTS] = {1.0, 2.0, 3.0, 4.0, 5.0};
   double yvals[NUM_POINTS] = {5.0, 3.0, 1.0, 3.0, 5.0};
 
-  FILE * temp = fopen("data.temp", "w");
-
   FILE * gnuplotPipe = popen("gnuplot -persistent", "w");
   int i;
   for(i=0;i<NUM_COMMANDS; i++){

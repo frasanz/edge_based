@@ -34,7 +34,7 @@
 #include "correct.h"
 
 void onlysmooth(){
-  int size=5;
+  int size=10;
   int i;
   double val=1.0;
   double val_ant=1.0;
@@ -57,11 +57,11 @@ void onlysmooth(){
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-  for(i=0;i<100;i++){
+  for(i=0;i<1000;i++){
     smooth_1(mgrid, size-1, operators);
     val_ant=val;
     val=max_of_triangle(mgrid[size-1],U,size-1);
-    printf("\t[ONLYSMOOTH] iter %d: ratio in function_u %f\n", i,val/val_ant);
+    printf("\t[ONLYSMOOTH] iter %d: max %f ratio in function_u %f\n", i,val, val/val_ant);
   }
   
   free_multigrid(mgrid,size);

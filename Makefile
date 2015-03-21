@@ -5,10 +5,11 @@ LIBS=-lm
                       
 all: edge_based
 edge_based: edge_based.c memory.o initialize.o screen.o test.o initialize_operator.o \
-	module.o smoothers.o defect.o restrict.o interpolation.o correct.o onlysmooth.o
+	module.o smoothers.o defect.o restrict.o interpolation.o correct.o onlysmooth.o \
+	draw.o
 	$(CC) $(DEFS) edge_based.c initialize.o memory.o screen.o test.o \
 		initialize_operator.o module.o smoothers.o defect.o restrict.o \
-		interpolation.o correct.o onlysmooth.o -o edge_based  $(LIBS)
+		interpolation.o correct.o onlysmooth.o draw.o -o edge_based  $(LIBS)
 
 memory.o: memory.c
 	$(CC) $(DEFS) -c memory.c -o memory.o $(LIBS)
@@ -45,6 +46,9 @@ correct.o: correct.c
 
 onlysmooth.o: onlysmooth.c
 	$(CC) $(DEFS) -c onlysmooth.c -o onlysmooth.o $(LIBS)
+
+draw.o: draw.c
+	$(CC) $(DEFS) -c draw.c -o draw.o $(LIBS)
                                                                                      
 clean:                                                                               
 	rm -f *.o edge_based

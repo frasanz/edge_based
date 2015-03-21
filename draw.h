@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  test.h
+ *       Filename:  draw.h
  *
- *    Description:  
+ *    Description:  :
  *
  *        Version:  1.0
- *        Created:  20/01/15 18:52:22
+ *        Created:  21/03/15 11:38:49
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,15 +16,12 @@
  * =====================================================================================
  */
 
-#ifndef _TEST_H_
-#define _TEST_H_
+#ifndef __DRAW_H_
+#define __DRAW_H_
 
-void run_test();
-void multigrid_two();
-void firstmultigrid();
-double firstmultigrid_loop(triangle ***, _operator **, int, int);
-void test_draw();
+#include "mytypes.h"
 
+void draw_triangle(triangle ** tri, int level, int function, int edge);
 
 #endif
 

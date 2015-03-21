@@ -32,6 +32,7 @@
 #include "interpolation.h"
 #include "defect.h"
 #include "correct.h"
+#include "draw.h"
 
 
 
@@ -374,7 +375,7 @@ void run_test(){
      * smoothing procedure, starting with a random value */
     initialize_grid_function_u_random(mgrid[size-2],size-2);
     initialize_boundary(mgrid[size-2],size-2,0.0,0);
-    for(j=0;j<100;j++){
+    for(j=0;j<300;j++){
       smooth_1(mgrid,size-2,operators);
     }
 
@@ -478,4 +479,14 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, 
     }
     return 0.0;
 }
+
+void  test_draw(){
+  printf("\t[INFO] Called test draw\n");
+  triangle *** mgrid;
+  int size=7;
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid(mgrid, size, 5);
+  draw_triangle(mgrid[size-1], size-1,U,edge_u);
+}
+
 

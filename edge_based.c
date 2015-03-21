@@ -27,6 +27,7 @@
 #include "test.h"
 #include "helper.h"
 #include "onlysmooth.h"
+#include "draw.h"
 
 
 #define SIZE 4
@@ -50,7 +51,12 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling onlysmooth\n\n");
     onlysmooth();
     return 0;
-  } else{
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "test_draw")){
+    printf("\t[INFO] calling test_draw\n\n");
+    test_draw();
+    return 0;
+  }
+  else{
     printf("\t[INFO] invalid option\n\n");
     return -1;
   }
