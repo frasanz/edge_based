@@ -27,7 +27,7 @@ void test_draw();
 void test_restrict();
 void test_interpolate();
 void test_smooth();
-
+void test_defect();
 
 #endif
 

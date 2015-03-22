@@ -67,6 +67,10 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling test_smooth\n\n");
     test_smooth();
     return 0;
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "test_defect")){
+    printf("\t[INFO] calling test_defect\n\n");
+    test_defect();
+    return 0;
   }
   else{
     printf("\t[INFO] invalid option\n\n");
