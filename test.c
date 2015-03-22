@@ -535,9 +535,9 @@ void test_smooth(){
   initialize_multigrid(mgrid,size,0);
   initialize_grid_function_u_random(mgrid[size-1],size-1);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
-  for(i=0;i<10;i++){
+  for(i=0;i<2;i++){
     smooth_1(mgrid,size-1,operators);
-    if(i%5==0){
+    if(i%1==0){
       sprintf(title,"%s_%d","U__edge_u_iter",i);
       draw_triangle(mgrid[size-1],size-1,U,edge_u,title);
       sprintf(title,"%s_%d","U__edge_v_iter",i);
