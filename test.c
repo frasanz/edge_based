@@ -535,23 +535,24 @@ void test_smooth(){
   initialize_multigrid(mgrid,size,0);
   initialize_grid_function_u_random(mgrid[size-1],size-1);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
-  for(i=0;i<2;i++){
+  for(i=0;i<9;i++){
     smooth_1(mgrid,size-1,operators);
     if(i%1==0){
       sprintf(title,"%s_%d","U__edge_u_iter",i);
       draw_triangle(mgrid[size-1],size-1,U,edge_u,title);
-      sprintf(title,"%s_%d","U__edge_v_iter",i);
-      draw_triangle(mgrid[size-1],size-1,U,edge_v,title);
-      sprintf(title,"%s_%d","U__edge_w_iter",i);
-      draw_triangle(mgrid[size-1],size-1,U,edge_w,title);
+      //sprintf(title,"%s_%d","U__edge_v_iter",i);
+      //draw_triangle(mgrid[size-1],size-1,U,edge_v,title);
+      //sprintf(title,"%s_%d","U__edge_w_iter",i);
+      //draw_triangle(mgrid[size-1],size-1,U,edge_w,title);
     }
   }
 }
 
 void test_defect(){
+  int size=6;
+  int i;
   printf("\t[INFO] Called test_defect\n");
   triangle *** mgrid;
-  int size=7;
   _operator ** operators;
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
@@ -561,12 +562,14 @@ void test_defect(){
   initialize_grid_function_u_random(mgrid[size-1],size-1);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
   compute_defect(mgrid,size-1,operators);
-  draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect_edge_u_iter_0");
-  draw_triangle(mgrid[size-1],size-1,U,edge_u,"U_edge_u_iter_0");
-  draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect_edge_v_iter_0");
-  draw_triangle(mgrid[size-1],size-1,U,edge_v,"U_edge_v_iter_0");
-  draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect_edge_w_iter_0");
-  draw_triangle(mgrid[size-1],size-1,U,edge_w,"U_edge_w_iter_0");
-
+ for(i=0;i<5;i++){
+    smooth_1(mgrid,size-1,operators);
+  }
+  draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect_edge_u_iter_5");
+  draw_triangle(mgrid[size-1],size-1,U,edge_u,"U_edge_u_iter_5");
+  draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect_edge_v_iter_5");
+  draw_triangle(mgrid[size-1],size-1,U,edge_v,"U_edge_v_iter_5");
+  draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect_edge_w_iter_5");
+  draw_triangle(mgrid[size-1],size-1,U,edge_w,"U_edge_w_iter_5");
 }
 

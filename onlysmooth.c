@@ -34,7 +34,7 @@
 #include "correct.h"
 
 void onlysmooth(){
-  int size=10;
+  int size=5;
   int i;
   double val=1.0;
   double val_ant=1.0;

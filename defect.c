@@ -79,6 +79,3 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
     }
   }
 }
-
-
-
