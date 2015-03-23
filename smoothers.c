@@ -48,7 +48,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
       }
       mgrid[level][i][j].function_u[edge_u]=
         (mgrid[level][i][j].function_f[edge_u]*h2
-          -(temp0+temp1+temp2))/oper[0][uu].op[1][1];
+          +(temp0+temp1+temp2))/oper[0][uu].op[1][1];
     }
   }
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points

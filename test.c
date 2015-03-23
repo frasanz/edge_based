@@ -360,6 +360,8 @@ void run_test(){
 
   for(i=0;i<200;i++){
     smooth_1(mgrid, size-1, operators);
+    smooth_1(mgrid, size-1, operators);
+
 
     /* Compute the defect u_m, f_m -> v_m*/
     compute_defect(mgrid, size-1, operators);
@@ -386,6 +388,8 @@ void run_test(){
 
     /* Post-smooth u_m, f_m -> u_m */
     smooth_1(mgrid, size-1, operators);
+    smooth_1(mgrid, size-1, operators);
+
 
     /* Compute the defect to check u_m, f_m -> v_m */
     compute_defect(mgrid, size-1, operators);
