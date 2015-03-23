@@ -358,7 +358,7 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<30;i++){
+  for(i=0;i<200;i++){
     smooth_1(mgrid, size-1, operators);
 
     /* Compute the defect u_m, f_m -> v_m*/
@@ -374,7 +374,7 @@ void run_test(){
      * smoothing procedure, starting with a random value */
     initialize_grid_function_u_random(mgrid[size-2],size-2);
     initialize_boundary(mgrid[size-2],size-2,0.0,0);
-    for(j=0;j<300;j++){
+    for(j=0;j<500;j++){
       smooth_1(mgrid,size-2,operators);
     }
 
@@ -391,7 +391,7 @@ void run_test(){
     compute_defect(mgrid, size-1, operators);
     defect_ant=defect;
     defect=max_of_triangle(mgrid[size-1],V,size-1);
-    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
+    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %e, ratio=%f\n",
           i,defect, defect/defect_ant);
   }
   fclose(f);
@@ -401,7 +401,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=7;
+  int size=10;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -507,7 +507,7 @@ void test_restrict(){
 void test_interpolate(){
   printf("\t[INFO] Called test_interpolate\n");
   triangle *** mgrid;
-  int size=7;
+  int size=10;
   mgrid=allocate_multigrid(size);
   initialize_multigrid(mgrid,size,0);
   initialize_grid_columns(mgrid[size-2],size-2);
