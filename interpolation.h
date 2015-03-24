@@ -22,6 +22,7 @@
 #include "mytypes.h"
 
 void interpolate_one(triangle ***mgrid, int level_inf);
+void interpolate_linear(triangle ***mgrid, int level_inf);
 
 #endif
 

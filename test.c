@@ -524,6 +524,21 @@ void test_interpolate(){
   draw_triangle(mgrid[size-1],size-1,V,edge_w,"V__edge_w__level_up");
 }
 
+void test_interpolate_linear(){
+  printf("\t[INFO] Called test_interpolate_linear\n");
+  triangle *** mgrid;
+  int size=5;
+  mgrid=allocate_multigrid(size);
+  initialize_multigrid(mgrid,size,0);
+  initialize_grid(mgrid[size-2],size-2,5.0);
+  interpolate_linear(mgrid, size-2);
+  draw_triangle(mgrid[size-1],size-1,V,edge_u,"V__edge_u__level_up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_v,"V__edge_v__level_up");
+  draw_triangle(mgrid[size-1],size-1,V,edge_w,"V__edge_w__level_up");
+}
+
+
+
 void test_smooth(){
   printf("\t[INFO] Called test_smooth\n");
   char title[256];
