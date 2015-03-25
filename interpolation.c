@@ -66,15 +66,18 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
       J=2*j;
       /*** edge_u ***/
       value1=mgrid[level_inf][i][j].function_u[edge_u];
-      if(j>0){
+      if(j==0){
+        mgrid[level_sup][I  ][J  ].function_v[edge_u] = 0.5*value1;
+        if(j==(int)(pow(2,level_inf)-i-1)){
+          mgrid[level_sup][I  ][J+1].function_v[edge_u]=0.5*value1;
+        }
+      } else {
         value2=mgrid[level_inf][i][j-1].function_u[edge_u];
         mgrid[level_sup][I  ][J  ].function_v[edge_u] = 0.75*value1+0.25*value2;
         mgrid[level_sup][I  ][J-1].function_v[edge_u] = 0.25*value1+0.75*value2;
         if(j==(int)(pow(2,level_inf)-i-1)){
           mgrid[level_sup][I  ][J+1].function_v[edge_u]=0.5*value1;
-        }
-      }else if(j==0){
-        mgrid[level_sup][I  ][J  ].function_v[edge_u] = 0.5*value1;
+        } 
       }
       /***edge_v***/
       value1=mgrid[level_inf][i][j].function_v[edge_v];
@@ -103,4 +106,24 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
       }
     }
   }
+  /* We can do right now middle files */
+  for(i=1;i<(int)(pow(2,level_sup)-1);i=i+2){
+    for(j=0;j<(int)(pow(2,level_sup)-1-i);j++){
+      /* edge_u */
+      mgrid[level_sup][i  ][j  ].function_v[edge_u]=
+        0.5*mgrid[level_sup][i-1][j  ].function_v[edge_u]+
+        0.5*mgrid[level_sup][i+1][j  ].function_v[edge_u];
+
+      }
+    /* edge_u */
+    mgrid[level_sup][i][(int)(pow(2,level_sup)-1-i)].function_v[edge_u]=
+      0.5*mgrid[level_sup][i-1][j+1].function_v[edge_u]+
+      0.5*mgrid[level_sup][i+1][j-1].function_v[edge_u];
+   mgrid[level_sup][i][(int)(pow(2,level_sup)-2-i)].function_v[edge_u]=
+      0.5*mgrid[level_sup][i-1][(int)(pow(2,level_sup)-2-i)+1].function_v[edge_u]+
+      0.5*mgrid[level_sup][i+1][(int)(pow(2,level_sup)-2-i)-1].function_v[edge_u];
+  }
+  mgrid[level_sup][i][0].function_v[edge_u]=
+    mgrid[level_sup][i-1][0].function_v[edge_u];
 }
+
