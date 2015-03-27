@@ -90,6 +90,9 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
         }
       }else if(i==0){
         mgrid[level_sup][I  ][J+1].function_v[edge_v]=0.5*value1;
+        if(j==0){
+            mgrid[level_sup][I+1][J  ].function_v[edge_v]=0.5*value1;
+         }
       }
       /***edge_w***/
       value1=mgrid[level_inf][i][j].function_v[edge_w];
@@ -102,11 +105,14 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
         }
       }else if(i==0){
         mgrid[level_sup][I  ][J  ].function_v[edge_w]=0.5*value1;
-
+        if(j==(int)(pow(2,level_inf)-i-1)){
+          mgrid[level_sup][I+1][J  ].function_v[edge_w]=0.5*value1;
+        }
       }
     }
   }
   /* We can do right now middle files */
+  /* EDGE U - MIDDLE FILES */
   for(i=1;i<(int)(pow(2,level_sup)-1);i=i+2){
     for(j=0;j<(int)(pow(2,level_sup)-1-i);j++){
       /* edge_u */
@@ -114,7 +120,7 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
         0.5*mgrid[level_sup][i-1][j  ].function_v[edge_u]+
         0.5*mgrid[level_sup][i+1][j  ].function_v[edge_u];
 
-      }
+        }
     /* edge_u */
     mgrid[level_sup][i][(int)(pow(2,level_sup)-1-i)].function_v[edge_u]=
       0.5*mgrid[level_sup][i-1][j+1].function_v[edge_u]+
@@ -125,5 +131,30 @@ void interpolate_linear(triangle *** mgrid, int level_inf){
   }
   mgrid[level_sup][i][0].function_v[edge_u]=
     mgrid[level_sup][i-1][0].function_v[edge_u];
-}
 
+  /* EDGE V - middle files */
+  for(i=0;i<(int)(pow(2,level_sup)-1);i=i+2){
+    for(j=0;j<=i;j++){
+      if(i==j){ // Base of triangle
+        mgrid[level_sup][i-j][j].function_v[edge_v]=
+          0.5*mgrid[level_sup][i-j+1][j].function_v[edge_v];
+      }else{
+      mgrid[level_sup][i-j][j].function_v[edge_v]=
+        (mgrid[level_sup][i-j+1][j].function_v[edge_v]+
+         mgrid[level_sup][i-j-1][j].function_v[edge_v])/2;
+      }
+    }
+  }
+  for(i=0;i<(int)(pow(2,level_sup)-1);i++){
+    for(j=1;j<=(int)(pow(2,level_sup)-i-1);j=j+2){
+      if(i==0){
+        mgrid[level_sup][i][j].function_v[edge_w]=
+          0.5*mgrid[level_sup][i+1][j-1].function_v[edge_w];
+      }else{
+        mgrid[level_sup][i][j].function_v[edge_w]=
+          (mgrid[level_sup][i+1][j-1].function_v[edge_w]+
+           mgrid[level_sup][i-1][j+1].function_v[edge_w])/2;
+      }
+    }
+  }
+}

@@ -360,7 +360,6 @@ void run_test(){
 
   for(i=0;i<200;i++){
     smooth_1(mgrid, size-1, operators);
-    smooth_1(mgrid, size-1, operators);
 
 
     /* Compute the defect u_m, f_m -> v_m*/
@@ -381,15 +380,13 @@ void run_test(){
     }
 
     /* Interpolate u_m-1 -> v_m */
-    interpolate_one(mgrid,size-2);
+    interpolate_linear(mgrid,size-2);
 
     /* Corrected solution u_m, v_m -> u_m */
     correct_one(mgrid, size-1);
 
     /* Post-smooth u_m, f_m -> u_m */
     smooth_1(mgrid, size-1, operators);
-    smooth_1(mgrid, size-1, operators);
-
 
     /* Compute the defect to check u_m, f_m -> v_m */
     compute_defect(mgrid, size-1, operators);
