@@ -87,4 +87,3 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
     }
   }
 }
-

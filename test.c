@@ -35,8 +35,6 @@
 #include "draw.h"
 
 
-
-
 void run_test(){
 
   /* We're going to build a 10 levels multigrid
@@ -308,7 +306,7 @@ void run_test(){
 
   void multigrid_two(){
     int triangles_alloc=0;
-    int size=7;
+    int size=5;
       int i,j;
       triangle *** mgrid;
     _operator ** operators;
@@ -347,7 +345,7 @@ void run_test(){
 
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
-    initialize_grid_function_value(mgrid[size-1],size-1,4.0,U);
+    initialize_grid_function_u_random(mgrid[size-1],size-1);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
@@ -360,16 +358,25 @@ void run_test(){
   /* Pre-smooth u_m, f_m -> u_m */
 
   for(i=0;i<1;i++){
-    smooth_1(mgrid, size-1, operators);
+    sprintf(aux,"%s_%d","U_level_sup_step",0);
+    draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
 
+ 
+    smooth_1(mgrid, size-1, operators);
+    sprintf(aux,"%s_%d","U_level_sup_post_smooth_step",1);
+    draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
 
     /* Compute the defect u_m, f_m -> v_m*/
     compute_defect(mgrid, size-1, operators);
+    sprintf(aux,"%s_%d","V_level_sup_defect_step",2);
+    draw_triangle(mgrid[size-1], size-1, V, edge_u,aux);
 
 
     /* Restrict the defect v_m -> f_m-1 */
     initialize_grid(mgrid[size-2],size-2,0.0);
     restrict_one(mgrid, size-1);
+    sprintf(aux,"%s_%d","F_level_inf_defect_step",3);
+    draw_triangle(mgrid[size-2], size-2, F, edge_u,aux);
 
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
@@ -384,10 +391,6 @@ void run_test(){
 
     /* Interpolate u_m-1 -> v_m */
     interpolate_linear(mgrid,size-2);
-    sprintf(aux,"%s_%d","V_level_sup_interpolated",i);
-    draw_triangle(mgrid[size-1], size-1, V, edge_u,aux);
-    sprintf(aux,"%s_%d","U_level_sup",i);
-    draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
 
     /* Corrected solution u_m, v_m -> u_m */
     printf("beforecorrect%f\n",max_of_triangle(mgrid[size-1],U,size-1));
