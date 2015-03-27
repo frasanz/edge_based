@@ -308,14 +308,15 @@ void run_test(){
 
   void multigrid_two(){
     int triangles_alloc=0;
-    int size=4;
-    int i,j;
-    triangle *** mgrid;
+    int size=7;
+      int i,j;
+      triangle *** mgrid;
     _operator ** operators;
     FILE *f;
     double defect_ant=1.0;
     double defect=1.0;
     const char * testrestrictoutput="two.out";
+    char aux[256];
 
     /* Open F file for output */
     f = fopen (testrestrictoutput,"w");
@@ -346,7 +347,7 @@ void run_test(){
 
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
-    initialize_grid_function_u_random(mgrid[size-1],size-1);
+    initialize_grid_function_value(mgrid[size-1],size-1,4.0,U);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
@@ -358,7 +359,7 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<200;i++){
+  for(i=0;i<1;i++){
     smooth_1(mgrid, size-1, operators);
 
 
@@ -373,17 +374,26 @@ void run_test(){
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
-    initialize_grid_function_u_random(mgrid[size-2],size-2);
-    initialize_boundary(mgrid[size-2],size-2,0.0,0);
-    for(j=0;j<500;j++){
+    for(j=0;j<10;j++){
       smooth_1(mgrid,size-2,operators);
+      compute_defect(mgrid, size-2, operators);
+      printf("\t[INFO] iter %d, defect in low level %e and value %e\n",i,
+            max_of_triangle(mgrid[size-2],V,size-2),
+            max_of_triangle(mgrid[size-2],U,size-2));
     }
 
     /* Interpolate u_m-1 -> v_m */
     interpolate_linear(mgrid,size-2);
+    sprintf(aux,"%s_%d","V_level_sup_interpolated",i);
+    draw_triangle(mgrid[size-1], size-1, V, edge_u,aux);
+    sprintf(aux,"%s_%d","U_level_sup",i);
+    draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
 
     /* Corrected solution u_m, v_m -> u_m */
+    printf("beforecorrect%f\n",max_of_triangle(mgrid[size-1],U,size-1));
     correct_one(mgrid, size-1);
+    printf("aftercorrect%f\n",max_of_triangle(mgrid[size-1],U,size-1));
+
 
     /* Post-smooth u_m, f_m -> u_m */
     smooth_1(mgrid, size-1, operators);
@@ -462,22 +472,20 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, 
   compute_defect(mgrid,level, operators);
   restrict_one(mgrid, level);
 
-  if(level==3){
-    initialize_grid_function_u_random(mgrid[level-1],level-1);
-    initialize_boundary(mgrid[level-1],level-1,0.0,0);
+  if(level==6){
     for(j=0;j<200;j++)
       smooth_1(mgrid,level-1,operators);
   }else{
       firstmultigrid_loop(mgrid, operators, size, level-1);
-    }
-    interpolate_one(mgrid,level-1);
-    correct_one(mgrid,level);
-    smooth_1(mgrid,level, operators);
-    if(level==size-1){
-      compute_defect(mgrid,level,operators);
-      return max_of_triangle(mgrid[level],V,level);
-    }
-    return 0.0;
+  }
+  interpolate_linear(mgrid,level-1);
+  correct_one(mgrid,level);
+  smooth_1(mgrid,level, operators);
+  if(level==size-1){
+    compute_defect(mgrid,level,operators);
+    return max_of_triangle(mgrid[level],V,level);
+  }
+  return 0.0;
 }
 
 void  test_draw(){
@@ -494,7 +502,7 @@ void test_restrict(){
   triangle *** mgrid;
   int size=7;
   mgrid=allocate_multigrid(size);
-  initialize_multigrid_columns(mgrid,size);
+  initialize_multigrid(mgrid,size,9.0);
   initialize_grid(mgrid[size-2],size-2,0.0);
   draw_triangle(mgrid[size-1],size-1,V,edge_u,"V, edge_u level Up");
   draw_triangle(mgrid[size-1],size-1,V,edge_v,"V, edge_v level Up");
@@ -565,7 +573,7 @@ void test_smooth(){
 }
 
 void test_defect(){
-  int size=6;
+  int size=10;
   int i;
   printf("\t[INFO] Called test_defect\n");
   triangle *** mgrid;
@@ -577,10 +585,10 @@ void test_defect(){
   initialize_multigrid(mgrid,size,0);
   initialize_grid_function_u_random(mgrid[size-1],size-1);
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
-  compute_defect(mgrid,size-1,operators);
- for(i=0;i<5;i++){
+ for(i=0;i<20;i++){
     smooth_1(mgrid,size-1,operators);
   }
+  compute_defect(mgrid,size-1,operators);
   draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect_edge_u_iter_5");
   draw_triangle(mgrid[size-1],size-1,U,edge_u,"U_edge_u_iter_5");
   draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect_edge_v_iter_5");

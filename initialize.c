@@ -131,6 +131,7 @@ void initialize_grid_function_u_random(triangle **grid, int level){
 }
 
 
+
 /* Note, we're initializing boundary only in function_u */
 void initialize_boundary(triangle **grid, int level, double value,int element){
   int i,j;
@@ -150,8 +151,21 @@ void initialize_multigrid_random(triangle *** mgrid, int levels){
   for(i=0;i<levels;i++)
     initialize_grid_random(mgrid[i],i);
 }
-
-
-
-
-
+void initialize_grid_function_value(triangle **grid, 
+    int level,double value, int element){
+  int i,j,k;
+  // generate different seed for random number                                     
+  for(i=0; i<pow(2,level);i++){
+    for(j=0;j<pow(2,level)-i;j++){
+      for(k=0;k<3;k++){
+        if(element==U)
+          grid[i][j].function_u[k]=value;
+        else if(element==V){
+          grid[i][j].function_v[k]=value;
+        } else {
+          grid[i][j].function_f[k]=value;
+        }
+      }
+    }
+  }
+}

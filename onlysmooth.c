@@ -34,10 +34,12 @@
 #include "correct.h"
 
 void onlysmooth(){
-  int size=5;
+  int size=10;
   int i;
   double val=1.0;
   double val_ant=1.0;
+  double def=1.0;
+  double def_ant=1.0;
   triangle *** mgrid;
   _operator ** operators;
 
@@ -53,16 +55,23 @@ void onlysmooth(){
   /* Initializing the boundary in the function_u */
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
+  /* Only for testing  */
+  initialize_grid_function_value(mgrid[size-1],size-1,0.0,F);
+
   /* Initializing operators */
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-  for(i=0;i<1000;i++){
+  for(i=0;i<100;i++){
+    smooth_1(mgrid, size-1, operators);
     smooth_1(mgrid, size-1, operators);
     val_ant=val;
     val=max_of_triangle(mgrid[size-1],U,size-1);
-    printf("\t[ONLYSMOOTH] iter %d: max %f ratio in function_u %f\n", i,val, val/val_ant);
+    compute_defect(mgrid,size-1, operators);
+    def_ant=def;
+    def=max_of_triangle(mgrid[size-1],V,size-1);
+    printf("\t[ONLYSMOOTH] iter %d: max %f ratio in function_u %f maxdef %f ration in function_v %f\n"
+                                    , i,val, val/val_ant,def,def/def_ant);
   }
-  
   free_multigrid(mgrid,size);
 }
