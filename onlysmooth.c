@@ -74,7 +74,7 @@ void onlysmooth(){
     printf("\t[ONLYSMOOTH] iter %d: max %e ratio in function_u \
  %e maxdef %e ration in function_v %e\n"
       ,i,val, val/val_ant,def,def/def_ant);
-    if(i%3==0){
+    if(i%300==0){
       sprintf(aux,"iter_%d_edge_u",i);
       draw_triangle(mgrid[size-1],size-1,U,edge_u,aux);
       sprintf(aux,"iter_%d_edge_v",i);
