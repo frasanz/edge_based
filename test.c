@@ -481,7 +481,7 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, 
   restrict_one(mgrid, level);
 
   if(level==3){
-    for(j=0;j<200;j++)
+    for(j=0;j<2000;j++)
       smooth_1(mgrid,level-1,operators);
   }else{
       firstmultigrid_loop(mgrid, operators, size, level-1);

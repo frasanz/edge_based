@@ -74,14 +74,13 @@ void onlysmooth(){
     printf("\t[ONLYSMOOTH] iter %d: max %e ratio in function_u \
  %e maxdef %e ration in function_v %e\n"
       ,i,val, val/val_ant,def,def/def_ant);
-    if(i%300==0){
-      sprintf(aux,"iter_%d_edge_u",i);
+    /*if(i%300==0){
       draw_triangle(mgrid[size-1],size-1,U,edge_u,aux);
       sprintf(aux,"iter_%d_edge_v",i);
       draw_triangle(mgrid[size-1],size-1,U,edge_v,aux);
       sprintf(aux,"iter_%d_edge_w",i);
       draw_triangle(mgrid[size-1],size-1,U,edge_w,aux);
-    }
+    }*/
   }
   free_multigrid(mgrid,size);
 }
