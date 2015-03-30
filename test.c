@@ -357,7 +357,7 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<10;i++){
+  for(i=0;i<100;i++){
     sprintf(aux,"%s_%d","U_level_sup_step",0);
     //draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
 
@@ -384,7 +384,7 @@ void run_test(){
     for(j=0;j<1000;j++){
       smooth_1(mgrid,size-2,operators);
     }
-    compute_defect(mgrid, size-1, operators);
+    compute_defect(mgrid, size-2, operators);
     printf("\t\t[INFO] iter %d: defect level down=%e\n",
         i,max_of_triangle(mgrid[size-2],V,size-2));
     printf("\t\t[INFO] iter %d: max value u level down=%e\n",
@@ -416,7 +416,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=10;
+    int size=10;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -462,21 +462,25 @@ void firstmultigrid(){
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
   /* Here is the main loop */
-  for(i=0;i<1000;i++){
+  for(i=0;i<100;i++){
+    initialize_grid_function_value(mgrid[size-1],size-1,0.0,V);
+    initialize_grid_function_value(mgrid[size-1],size-1,0.0,F);
     defect_ant=defect;
     defect=firstmultigrid_loop(mgrid,operators,size,size-1);
+
     printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
           i,defect, defect/defect_ant);
   }
 }
 
 double firstmultigrid_loop(triangle ***mgrid, _operator ** operators, int size, int level){
-  int j;
+    int j;
   smooth_1(mgrid, level, operators);
   compute_defect(mgrid,level, operators);
+  initialize_grid(mgrid[level-1],level-1,0.0);
   restrict_one(mgrid, level);
 
-  if(level==6){
+  if(level==3){
     for(j=0;j<200;j++)
       smooth_1(mgrid,level-1,operators);
   }else{
