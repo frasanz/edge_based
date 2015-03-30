@@ -416,7 +416,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-    int size=10;
+    int size=9;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -455,7 +455,7 @@ void firstmultigrid(){
 
   /* Initializing las grid function_u random */
   printf("\t[INFO] Initializing last grid function_u random\n");
-  initialize_grid_function_u_random(mgrid[size-1],size-1);
+  initialize_grid_function_u_random2(mgrid[size-1],size-1);
 
   /* Initializing the boundary in the function_u */
   printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size-1);
