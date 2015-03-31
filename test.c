@@ -416,7 +416,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=7;
+  int size=8;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -478,9 +478,6 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators,
     int j;
   //printf("\tlevel %d smooth\n",level);
   smooth_1(mgrid, level, operators);
-  smooth_1(mgrid, level, operators);
-  smooth_1(mgrid, level, operators);
-  smooth_1(mgrid, level, operators);
 
   //printf("\tlevel %d, defect\n",level);
   compute_defect(mgrid,level, operators);
@@ -501,9 +498,6 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators,
   correct_one(mgrid,level);
   //printf("\tlevel %d, smooth\n",level);
   smooth_1(mgrid,level, operators);
-  smooth_1(mgrid, level, operators);
-  smooth_1(mgrid, level, operators);
-  smooth_1(mgrid, level, operators);
 
   if(times>=2 && level > 3){
       //printf("recall\n");
