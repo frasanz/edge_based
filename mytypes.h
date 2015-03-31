@@ -40,6 +40,7 @@ typedef struct {
   double function_u[3];
   double function_v[3];
   double function_f[3];
+  double function_ub[3];
 } triangle;
 
 typedef struct {

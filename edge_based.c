@@ -36,20 +36,21 @@ int main(int argc, char **argv){
   if(checkCmdLineFlag(argc, (const char **)argv, "test")){
     run_test();
     return 0;
-  } 
-  else if(checkCmdLineFlag(argc, (const char **)argv, "two")){
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "two")){
     printf("\t[INFO] calling multigrid_two\n\n");
     multigrid_two();
     return 0;
-  }
-  else if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigrid")){
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigrid")){
     printf("\t[INFO] calling firstmultigrid\n\n");
     firstmultigrid();
     return 0;
-  }
-  else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmooth")){
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmooth")){
     printf("\t[INFO] calling onlysmooth\n\n");
     onlysmooth();
+    return 0;
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmoothjacobi")){
+    printf("\t[INFO] calling onlysmoothjacobi\n\n");
+    onlysmoothjacobi();
     return 0;
   } else if(checkCmdLineFlag(argc, (const char **)argv, "test_draw")){
     printf("\t[INFO] calling test_draw\n\n");

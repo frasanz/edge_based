@@ -23,5 +23,6 @@
 #include "mytypes.h"
 
 void onlysmooth();
+void onlysmoothjacobi();
 
 #endif
