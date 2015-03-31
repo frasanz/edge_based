@@ -22,7 +22,7 @@
 void run_test();
 void multigrid_two();
 void firstmultigrid();
-double firstmultigrid_loop(triangle ***, _operator **, int, int);
+double firstmultigrid_loop(triangle ***, _operator **, int, int,int);
 void test_draw();
 void test_restrict();
 void test_interpolate();

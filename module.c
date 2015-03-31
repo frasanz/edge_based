@@ -24,8 +24,8 @@
 double max_of_triangle(triangle ** tri, int element, int level){
   int i,j,k;
   double max=0.0;
-  for(i=0;i<pow(2,level);i++){
-    for(j=0;j<pow(2,level)-i;j++){
+  for(i=1;i<pow(2,level)-1;i++){
+      for(j=1;j<pow(2,level)-i-1;j++){
       for(k=0;k<3;k++){
         //printf("%d of %d,  %d of %d,  %d ",i, (int)pow(2,level), j, (int)pow(2,level-i), k);
         if(element==U){

@@ -35,7 +35,7 @@
 #include "draw.h"
 
 void onlysmooth(){
-  int size=5;
+  int size=10;
   int i;
   double val=1.0;
   double val_ant=1.0;
@@ -63,8 +63,7 @@ void onlysmooth(){
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-  for(i=0;i<9;i++){
-    smooth_1(mgrid, size-1, operators);
+  for(i=0;i<30;i++){
     smooth_1(mgrid, size-1, operators);
     val_ant=val;
     val=max_of_triangle(mgrid[size-1],U,size-1);
@@ -72,7 +71,7 @@ void onlysmooth(){
     def_ant=def;
     def=max_of_triangle(mgrid[size-1],V,size-1);
     printf("\t[ONLYSMOOTH] iter %d: max %e ratio in function_u \
- %e maxdef %e ration in function_v %e\n"
+ %e maxdef %e ration in function_v %f\n"
       ,i,val, val/val_ant,def,def/def_ant);
     /*if(i%300==0){
       draw_triangle(mgrid[size-1],size-1,U,edge_u,aux);
