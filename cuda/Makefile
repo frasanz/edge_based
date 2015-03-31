@@ -123,10 +123,13 @@ all: build
 
 build: jacobi
 
+initialize_operator.o: initialize_operator.c
+	$(GCC) $(CCFLAGS) -o $@ -c $<
+
 jacobi.o: jacobi.cu
 	$(NVCC) $(NVCCFLAGS) $(EXTRA_NVCCFLAGS) $(GENCODE_FLAGS) $(INCLUDES) -o $@ -c $<
 
-jacobi: jacobi.o
+jacobi: jacobi.o initialize_operator.o
 	$(GCC) $(CCFLAGS) -o $@ $+ $(LDFLAGS) $(EXTRA_LDFLAGS)
 
 run: build
