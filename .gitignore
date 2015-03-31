@@ -3,3 +3,4 @@ edge_based
 *.out
 *.swp
 *.temp
+cuda/jacobi
