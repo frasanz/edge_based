@@ -39,7 +39,7 @@ void run_test(){
 
   /* We're going to build a 10 levels multigrid
    * to run some tests */
-  int size=10;
+  int size=12;
   int i,j,k,l;
   int triangles_alloc=0;
   const char * testoutput="test.out";
@@ -416,7 +416,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=9;
+  int size=7;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -455,7 +455,7 @@ void firstmultigrid(){
 
   /* Initializing las grid function_u random */
   printf("\t[INFO] Initializing last grid function_u random\n");
-  initialize_grid_function_u_random2(mgrid[size-1],size-1);
+  initialize_grid_function_u_random(mgrid[size-1],size-1);
 
   /* Initializing the boundary in the function_u */
   printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size-1);
@@ -468,7 +468,7 @@ void firstmultigrid(){
     defect_ant=defect;
     defect=firstmultigrid_loop(mgrid,operators,size,size-1,2);
 
-    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %f, ratio=%f\n",
+    printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %e, ratio=%f\n",
           i,defect, defect/defect_ant);
   }
 }
@@ -478,6 +478,10 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators,
     int j;
   //printf("\tlevel %d smooth\n",level);
   smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
+
   //printf("\tlevel %d, defect\n",level);
   compute_defect(mgrid,level, operators);
   initialize_grid(mgrid[level-1],level-1,0.0);
@@ -497,6 +501,10 @@ double firstmultigrid_loop(triangle ***mgrid, _operator ** operators,
   correct_one(mgrid,level);
   //printf("\tlevel %d, smooth\n",level);
   smooth_1(mgrid,level, operators);
+  smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
+  smooth_1(mgrid, level, operators);
+
   if(times>=2 && level > 3){
       //printf("recall\n");
       firstmultigrid_loop(mgrid,operators,size,level,times-1);

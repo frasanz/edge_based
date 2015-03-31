@@ -43,7 +43,6 @@ void onlysmooth(){
   double def_ant=1.0;
   triangle *** mgrid;
   _operator ** operators;
-  char aux[256];
 
   printf("[ONLYSMOOTH]\n\n");
   mgrid=allocate_multigrid(size);
