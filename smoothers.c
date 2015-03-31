@@ -30,6 +30,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
   double temp1 = 0.0;
   double temp2 = 0.0;
   double h2 = pow(1/pow(2,level),2);
+
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
     for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
       temp0=0.0;
