@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <omp.h>
 #include "smoothers.h"
 
 
@@ -84,6 +85,68 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
       mgrid[level][i][j].function_u[edge_u]=
         (mgrid[level][i][j].function_f[edge_u]*h2
           -(temp0+temp1+temp2))/oper[0][uu].op[1][1];
+    }
+  }
+}
+void smooth_1_parallel(triangle *** mgrid, int level, _operator ** oper){
+  int i,j,l,m,k;
+  double temp[3];
+  double h2 = pow(1/pow(2,level),2);
+
+  /* V */
+
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
+      for(l=0;l<3;l++)
+        temp[l]=0.0;
+      for(l=0;l<3;l++){
+        for(m=0;m<3;m++){
+        temp[0]=temp[0]+oper[0][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+          if((l!=1) && (m!=1))
+            temp[1]=temp[1]+oper[0][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+          temp[2]=temp[2]+oper[0][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+        }
+      }
+      mgrid[level][i][j].function_u[edge_v]=
+        (mgrid[level][i][j].function_f[edge_v]*h2
+         -(temp[0]+temp[1]+temp[2]))/oper[0][vv].op[1][1];
+    }
+  }
+
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<(int)pow(2,level)-i-1;j++){ // For all columns
+    for(l=0;l<3;l++)
+      temp[l]=0.0;
+      for(l=0;l<3;l++){
+        for(m=0;m<3;m++){
+          temp[0]=temp[0]+oper[0][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+          temp[1]=temp[1]+oper[0][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+          if((l!=1) && (m!=1))
+            temp[2]=temp[2]+oper[0][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+        }
+      }
+      mgrid[level][i][j].function_u[edge_w]=
+        (mgrid[level][i][j].function_f[edge_w]*h2
+         -(temp[0]+temp[1]+temp[2]))/oper[0][ww].op[1][1];
+    }
+  }
+
+  for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
+    for(l=0;l<3;l++)
+      temp[l]=0.0;
+      /* Smoothing edge u */
+      for(l=0;l<3;l++){
+        for(m=0;m<3;m++){
+          if((l!=1) && (m!=1))
+            temp[0]=temp[0]+oper[0][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+          temp[1]=temp[1]+oper[0][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+          temp[2]=temp[2]+oper[0][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+        }
+      }
+      mgrid[level][i][j].function_u[edge_u]=
+        (mgrid[level][i][j].function_f[edge_u]*h2
+            -(temp[0]+temp[1]+temp[2]))/oper[0][uu].op[1][1];
     }
   }
 }

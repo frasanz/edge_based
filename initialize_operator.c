@@ -19,6 +19,7 @@
 #include <string.h>
 #include <math.h>
 #include "initialize_operator.h"
+#include "mytypes.h"
 
 _operator ** allocate_operators(const char * problem, int size){
   int i;

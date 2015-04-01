@@ -44,6 +44,10 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling firstmultigrid\n\n");
     firstmultigrid();
     return 0;
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "firstmultigridparallel")){
+    printf("\t[INFO] calling firstmultigridparallel\n\n");
+    firstmultigridparallel();
+    return 0;
   } else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmooth")){
     printf("\t[INFO] calling onlysmooth\n\n");
     onlysmooth();
