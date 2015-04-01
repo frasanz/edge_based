@@ -416,7 +416,7 @@ void firstmultigrid(){
 
   printf("\t[INFO] Called first multigrid\n");
   int triangles_alloc=0;
-  int size=8;
+  int size=12;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -514,7 +514,7 @@ void firstmultigridparallel(){
 
   printf("\t[INFO] Called firstmultigridparallel\n");
   int triangles_alloc=0;
-  int size=8;
+  int size=5;
   int i;
   triangle *** mgrid;
   _operator ** operators;
@@ -560,7 +560,7 @@ void firstmultigridparallel(){
   initialize_boundary(mgrid[size-1],size-1,0.0,0);
 
   /* Here is the main loop */
-  for(i=0;i<100;i++){
+  for(i=0;i<1;i++){
     initialize_grid_function_value(mgrid[size-1],size-1,0.0,V);
     initialize_grid_function_value(mgrid[size-1],size-1,0.0,F);
     defect_ant=defect;

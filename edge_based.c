@@ -52,6 +52,10 @@ int main(int argc, char **argv){
     printf("\t[INFO] calling onlysmooth\n\n");
     onlysmooth();
     return 0;
+  }  else if(checkCmdLineFlag(argc, (const char **)argv, "onlysmoothparallel")){
+    printf("\t[INFO] calling onlysmooth\n\n");
+    onlysmoothparallel();
+    return 0;
   } else if(checkCmdLineFlag(argc, (const char **)argv, "test_draw")){
     printf("\t[INFO] calling test_draw\n\n");
     test_draw();

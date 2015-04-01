@@ -23,4 +23,5 @@
 #include "mytypes.h"
 
 void onlysmooth();
+void onlysmoothparallel();
 #endif

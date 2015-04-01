@@ -23,7 +23,6 @@
 
 
 /* This is only a test of the smoothing procedure
- * At this moment I don't have very clear anything
  */
 void smooth_1(triangle *** mgrid, int level, _operator ** oper){
   int i,j,l,m;
@@ -88,6 +87,8 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
     }
   }
 }
+
+/* TODO: This is not parallel right now 01/04/15 */
 void smooth_1_parallel(triangle *** mgrid, int level, _operator ** oper){
   int i,j,l,m,k;
   double temp[3];
