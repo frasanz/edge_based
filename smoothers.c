@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <omp.h>
+#include <cblas.h>                                                                   
+#include <lapacke.h>
 #include "smoothers.h"
 
 
@@ -90,7 +92,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
 
 /* TODO: This is not parallel right now 01/04/15 */
 void smooth_1_parallel(triangle *** mgrid, int level, _operator ** oper){
-  int i,j,l,m,k;
+  int i,j,l,m;
   double temp[3];
   double h2 = pow(1/pow(2,level),2);
 
@@ -148,6 +150,68 @@ void smooth_1_parallel(triangle *** mgrid, int level, _operator ** oper){
       mgrid[level][i][j].function_u[edge_u]=
         (mgrid[level][i][j].function_f[edge_u]*h2
             -(temp[0]+temp[1]+temp[2]))/oper[0][uu].op[1][1];
+    }
+  }
+}
+
+void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
+  int i,j,l,m;
+  double matrix[9]; /* In fortran order, column major order */
+  double B[3];
+  double h2 = pow(1/pow(2,level),2);
+  /* We need this to solve the matrix in fortran*/
+  int N = 3; 
+  int nrhs = 1; 
+  int lda = 3;
+  int ipiv[3];
+  int ldb = 3;
+  int info;  
+  for(i=1;i<(int)(pow(2,level)-1);i++){     // For all interior triangles
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all interior triangles
+      B[0]=mgrid[level][i][j].function_f[edge_u]*h2;
+      B[1]=mgrid[level][i][j].function_f[edge_v]*h2;
+      B[2]=mgrid[level][i][j].function_f[edge_w]*h2;
+      /* We're going to build the 3x3 system for each triangle */
+      for(l=0;l<3;l++){
+        for(m=0;m<3;m++){
+          if(l==1 && m==1){
+            matrix[0+3*0]=oper[level][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+            matrix[0+3*1]=oper[level][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+            matrix[0+3*2]=oper[level][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+            matrix[1+3*0]=oper[level][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+            matrix[1+3*1]=oper[level][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+            matrix[1+3*2]=oper[level][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+            matrix[2+3*0]=oper[level][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u];
+            matrix[2+3*1]=oper[level][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v];
+            matrix[2+3*2]=oper[level][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
+
+          } else {
+            B[0]-=(oper[level][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+                   oper[level][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+                   oper[level][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+            B[1]-=(oper[level][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+                   oper[level][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+                   oper[level][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+            B[2]-=(oper[level][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+                   oper[level][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+                   oper[level][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+          }
+        }
+      }
+      /* System built, now, solve it */
+       printf("A=[%f, %f, %f; %f, %f, %f; %f, %f, %f]\n",matrix[0],matrix[3],matrix[6],
+                                                  matrix[1],matrix[4],matrix[7],
+                                                  matrix[2],matrix[5],matrix[8]);
+      printf("B=[%f; %f; %f]\n",B[0],B[1],B[2]);
+      dgesv_(&N, &nrhs, matrix, &lda, ipiv, B, &ldb, &info);
+      printf("%f %f %f\n",B[0],B[1],B[2]);
+      if(info == 0){
+        mgrid[level][i][j].function_u[edge_u]=B[0];
+        mgrid[level][i][j].function_u[edge_v]=B[1];
+        mgrid[level][i][j].function_u[edge_w]=B[2];
+      } else {
+        printf("FAIL!");
+      }
     }
   }
 }

@@ -24,4 +24,5 @@
 
 void onlysmooth();
 void onlysmoothparallel();
+void onlysmoothgaussseidel();
 #endif

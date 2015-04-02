@@ -1,7 +1,7 @@
 CXX=g++
 CC=gcc
 DEFS=-Wall -O3 -fopenmp
-LIBS=-lm
+LIBS=-lm -llapack -lblas
                       
 all: edge_based
 edge_based: edge_based.c memory.o initialize.o screen.o test.o initialize_operator.o \
