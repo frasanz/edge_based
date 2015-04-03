@@ -167,6 +167,36 @@ void initialize_boundary(triangle **grid, int level, double value,int element){
     }
   }
 }
+/* Note, we're initializing boundary only in function_u */
+void initialize_bigboundary(triangle **grid, int level, double value,int element){
+  int i,j;
+  int max=(int)(pow(2,level));
+  for(i=0;i<max;i++){
+    for(j=0;j<3;j++){
+      if(element==U){
+        grid[i][0].function_u[j]=value;
+        grid[0][i].function_u[j]=value;
+        grid[i][max-i-1].function_u[j]=value;
+      } else if(element==V){
+        grid[i][0].function_v[j]=value;
+        grid[0][i].function_v[j]=value;
+        grid[i][max-i-1].function_v[j]=value;
+      } else {
+        grid[i][0].function_f[j]=value;
+        grid[0][i].function_f[j]=value;
+        grid[i][max-i-1].function_f[j]=value;
+      }
+    }
+  }
+  for(i=1;i<max-1;i++){
+    if(element==U){
+      grid[1][i].function_u[0]=value;
+      grid[i][1].function_u[2]=value;
+      grid[i][max-i-2].function_u[1]=value;
+    }
+  }
+}
+
 void initialize_multigrid_random(triangle *** mgrid, int levels){
   int i=0;
   time_t t;                                                                        
