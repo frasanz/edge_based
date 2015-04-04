@@ -134,8 +134,8 @@ void onlysmoothparallel(){
   free_multigrid(mgrid,size);
 }
 void onlysmoothgaussseidel(){
-  int size=5;
-  int i;
+  int size=4;
+  int i,j;
   double val=1.0;
   double val_ant=1.0;
   double def=1.0;
@@ -160,15 +160,19 @@ void onlysmoothgaussseidel(){
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-  for(i=0;i<3;i++){
-    sprintf(aux,"%s_%d","U_level_edge_u",i);
-    draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
-    sprintf(aux,"%s_%d","U_level_edge_v",i);
-    draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
-    sprintf(aux,"%s_%d","U_level_edge_w",i);
-    draw_triangle(mgrid[size-1], size-1, U, edge_w,aux);
-    smooth_1(mgrid,size-1,operators);
-    smooth_gaussseidel(mgrid, size-1, operators);
+  for(i=0;i<10;i++){
+    //sprintf(aux,"%s_%d","U_level_edge_u",i);
+    //draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
+    //sprintf(aux,"%s_%d","U_level_edge_v",i);
+    //draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
+    //sprintf(aux,"%s_%d","U_level_edge_w",i);
+    //draw_triangle(mgrid[size-1], size-1, U, edge_w,aux);*/
+    //printf("line= ");
+    //for(j=0;j<pow(2,size-1)-1;j++){
+      //printf("%e ",mgrid[size-1][j][1].function_u[edge_w]);
+   // }
+    printf("\n");
+    smooth_gaussseidel(mgrid,size-1,operators);
     val_ant=val;
     val=max_of_triangle(mgrid[size-1],U,size-1);
     compute_defect(mgrid,size-1, operators);

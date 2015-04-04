@@ -4,3 +4,4 @@ edge_based
 *.swp
 *.temp
 cuda/jacobi
+octave-workspace

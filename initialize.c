@@ -190,6 +190,7 @@ void initialize_bigboundary(triangle **grid, int level, double value,int element
   }
   for(i=1;i<max-1;i++){
     if(element==U){
+      printf("Here\n");
       grid[1][i].function_u[0]=value;
       grid[i][1].function_u[2]=value;
       grid[i][max-i-2].function_u[1]=value;

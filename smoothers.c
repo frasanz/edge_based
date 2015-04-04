@@ -159,6 +159,8 @@ void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
   int i,j,l,m;
   double matrix[9]; /* In fortran order, column major order */
   double B[3];
+  double matrix_aux[4];
+  double B_aux[2];
   double h2 = pow(1/pow(2,level),2);
   /* We need this to solve the matrix in fortran*/
   int N= 3; 
@@ -167,6 +169,7 @@ void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
   int ipiv[3];
   int ldb = 3;
   int info;  
+  int mode=0;
 
   /* Triangles down */
   for(i=1;i<(int)(pow(2,level)-2);i++){     // For all interior triangles
@@ -202,49 +205,103 @@ void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
 
           } else {
             B[0]=B[0]-
-                  (oper[level][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
-                   oper[level][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
-                   oper[level][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+              (oper[level][uu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+               oper[level][uv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+               oper[level][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
             B[1]=B[1]-
-                  (oper[level][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
-                   oper[level][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
-                   oper[level][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+              (oper[level][vu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+               oper[level][vv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+               oper[level][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
             B[2]=B[2]-
-                  (oper[level][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
-                   oper[level][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
-                   oper[level][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
+              (oper[level][wu].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_u]+
+               oper[level][wv].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_v]+
+               oper[level][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w]);
           }
         }
       }
       /* System built, now, solve it */
-      //printf("%d %d\n",i,j);
-      //printf("A=[%f, %f, %f; %f, %f, %f; %f, %f, %f]\n",matrix[0],matrix[3],matrix[6],
-      //                                            matrix[1],matrix[4],matrix[7],
-      //                                            matrix[2],matrix[5],matrix[8]);
-      //printf("B=[%f; %f; %f]\n",B[0],B[1],B[2]);
+      printf("%d %d\n",i,j);
+      printf("A=[%e, %e, %e; %e, %e, %e; %e, %e, %e]\n",matrix[0],matrix[3],matrix[6],
+          matrix[1],matrix[4],matrix[7],
+          matrix[2],matrix[5],matrix[8]);
+      printf("B=[%f; %f; %f]\n",B[0],B[1],B[2]);
       N= 3; 
       nrhs = 1; 
       lda = 3;
       ldb = 3;
       dgesv_(&N, &nrhs, matrix, &lda, ipiv, B, &ldb, &info);
-      //printf("%e %e %e\n",mgrid[level][i][j].function_u[edge_u],
-      //                    mgrid[level][i][j].function_u[edge_v],
-       //                   mgrid[level][i][j].function_u[edge_w]);
-      //printf("%f %f %f\n",B[0],B[1],B[2]);
+      printf("%e %e %e\n",mgrid[level][i][j].function_u[edge_u],
+          mgrid[level][i][j].function_u[edge_v],
+          mgrid[level][i][j].function_u[edge_w]);
       if(info == 0){
-        //mgrid[level][i][j].function_u[edge_u]=B[0];
-       // mgrid[level][i][j].function_u[edge_v]=B[1];
-        //mgrid[level][i][j].function_u[edge_w]=B[2];
+        printf("sol=[%e, %e, %e]\n",B[0],B[1],B[2]);
+        mgrid[level][i][j].function_u[edge_u]=B[0];
+        mgrid[level][i][j].function_u[edge_v]=B[1];
+        mgrid[level][i][j].function_u[edge_w]=B[2];
         //printf("\t\t%f\n",max_of_triangle(mgrid[level],U,level));
       } else {
-        printf("FAIL!: %d\n",info);
+        printf("FAIL: %d\n",info);
+        if(info==1){
+          mode=1;
+          matrix_aux[0]=matrix[4];
+          matrix_aux[1]=matrix[5];
+          matrix_aux[2]=matrix[7];
+          matrix_aux[3]=matrix[8];
+          B_aux[0]=B[1];
+          B_aux[1]=B[2];
+        } else if(info==2){
+          mode=2;
+          matrix_aux[0]=matrix[0];
+          matrix_aux[1]=matrix[2];
+          matrix_aux[2]=matrix[6];
+          matrix_aux[3]=matrix[8];
+          B_aux[0]=B[0];
+          B_aux[1]=B[2];
+        } else if(info==3){
+          mode=3;
+          matrix_aux[0]=matrix[0];
+          matrix_aux[1]=matrix[1];
+          matrix_aux[2]=matrix[3];
+          matrix_aux[3]=matrix[4];
+          B_aux[0]=B[0];
+          B_aux[1]=B[1];
+        }
+        N= 2; 
+        nrhs = 1; 
+        lda = 2;
+        ldb = 2;
+        dgesv_(&N, &nrhs, matrix_aux, &lda, ipiv, B_aux, &ldb, &info);
+        if(info == 0){
+          if(mode==1){
+            mgrid[level][i][j].function_u[edge_v]=B[0];
+            mgrid[level][i][j].function_u[edge_w]=B[1];
+            printf("sol=[%e, %e, %e]\n",0.0,B[0],B[1]);
+
+          } else if(mode==2){
+            mgrid[level][i][j].function_u[edge_u]=B[0];
+            mgrid[level][i][j].function_u[edge_w]=B[1];
+            printf("sol=[%e, %e, %e]\n",B[0],0.0,B[1]);
+          } else if(mode==3){
+            mgrid[level][i][j].function_u[edge_u]=B[0];
+            mgrid[level][i][j].function_u[edge_w]=B[1];
+            printf("sol=[%e, %e, %e]\n",B[0],B[1],0.0);
+          }
+        } else {
+          printf("double fail\n");
+        }
       }
     }
   }
 
   /* Triangles UP */
+  printf("******************** Triangles UP *************************");
   for(i=1;i<(int)(pow(2,level)-3);i++){     // For all interior triangles
     for(j=1;j<(int)(pow(2,level)-2-i);j++){ // For all interior triangles
+      //printf("Iter %d %d\n",i,j);
+      //for(l=0;l<(int)(pow(2,level)-1);l++){
+      //    printf(" %e",mgrid[level][l][1].function_u[edge_w]);
+      //}
+      //printf("\n");
       B[0]=mgrid[level][i][j].function_f[edge_u]*h2;
       B[1]=mgrid[level][i][j].function_f[edge_v]*h2;
       B[2]=mgrid[level][i][j].function_f[edge_w]*h2;
@@ -289,16 +346,15 @@ void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
         }
       }
       /* System built, now, solve it */
-      printf("A=[%e, %e, %e; %e, %e, %e; %e, %e, %e]\n",matrix[0],matrix[3],matrix[6],
-                                                  matrix[1],matrix[4],matrix[7],
-                                                  matrix[2],matrix[5],matrix[8]);
-      printf("B=[%e, %e, %e]\n",B[0],B[1],B[2]);
+      //printf("A=[%e, %e, %e; %e, %e, %e; %e, %e, %e]\n",matrix[0],matrix[3],matrix[6],
+      //                                            matrix[1],matrix[4],matrix[7],
+      //                                            matrix[2],matrix[5],matrix[8]);
+      //printf("B=[%e, %e, %e]\n",B[0],B[1],B[2]);
 
-      printf("%e %e %e\n",mgrid[level][i][j].function_u[edge_u],
-                          mgrid[level][i][j].function_u[edge_v],
-                          mgrid[level][i][j].function_u[edge_w]);
+      //printf("ant=[%e %e %e]\n",mgrid[level][i+1][j].function_u[edge_u],
+      //                          mgrid[level][i][j].function_u[edge_v],
+      //                          mgrid[level][i][j+1].function_u[edge_w]);
       dgesv_(&N, &nrhs, matrix, &lda, ipiv, B, &ldb, &info);
-      printf("%e %e %e\n",B[0],B[1],B[2]);
       if(info == 0){
         mgrid[level][i+1][j].function_u[edge_u]=B[0];
         mgrid[level][i][j].function_u[edge_v]=B[1];
@@ -306,7 +362,10 @@ void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper){
       } else {
         printf("FAIL! %d\t",info);
       }
+      //printf("pos=[%e %e %e]\n",mgrid[level][i+1][j].function_u[edge_u],
+      //                          mgrid[level][i][j].function_u[edge_v],
+      //                          mgrid[level][i][j+1].function_u[edge_w]);
+
     }
   }
-
 }
