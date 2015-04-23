@@ -51,7 +51,7 @@ void onlysmooth(){
   initialize_multigrid(mgrid,size,0);
 
   /* Initialize las grid, function_u with random value */
-  initialize_grid_function_u_random(mgrid[size-1],size-1);
+  initialize_grid_function_u_random2(mgrid[size-1],size-1);
 
   /* Only for testing  */
   initialize_grid_function_value(mgrid[size-1],size-1,0.0,F);
@@ -62,9 +62,10 @@ void onlysmooth(){
   operators=allocate_operators("-grad(div)+curl(rot)",size);
   initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-  for(i=0;i<2;i++){
+  for(i=0;i<200;i++){
     smooth_1(mgrid, size-1, operators);
     smooth_1(mgrid, size-1, operators);
+
     val_ant=val;
     val=max_of_triangle(mgrid[size-1],U,size-1);
     compute_defect(mgrid,size-1, operators);

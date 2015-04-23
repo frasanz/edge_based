@@ -306,7 +306,7 @@ void run_test(){
 
   void multigrid_two(){
     int triangles_alloc=0;
-    int size=4;
+    int size=10;
       int i,j;
       triangle *** mgrid;
     _operator ** operators;
@@ -345,7 +345,7 @@ void run_test(){
 
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
-    initialize_grid_function_u_random(mgrid[size-1],size-1);
+    initialize_grid_function_u_random2(mgrid[size-1],size-1);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
@@ -381,7 +381,7 @@ void run_test(){
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
-    for(j=0;j<1000;j++){
+    for(j=0;j<10000;j++){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
@@ -400,7 +400,7 @@ void run_test(){
     correct_one(mgrid, size-1);
 
     /* Post-smooth u_m, f_m -> u_m */
-    smooth_1(mgrid, size-1, operators);
+    //smooth_1(mgrid, size-1, operators);
 
     /* Compute the defect to check u_m, f_m -> v_m */
     compute_defect(mgrid, size-1, operators);
