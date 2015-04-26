@@ -306,7 +306,7 @@ void run_test(){
 
   void multigrid_two(){
     int triangles_alloc=0;
-    int size=10;
+    int size=6;
       int i,j;
       triangle *** mgrid;
     _operator ** operators;
@@ -345,7 +345,7 @@ void run_test(){
 
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
-    initialize_grid_function_u_random2(mgrid[size-1],size-1);
+    initialize_grid_function_u_random(mgrid[size-1],size-1);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
@@ -357,31 +357,35 @@ void run_test(){
      */
   /* Pre-smooth u_m, f_m -> u_m */
 
-  for(i=0;i<100;i++){
-    sprintf(aux,"%s_%d","U_level_sup_step",0);
-    //draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
+
+  int draw_step=199;
+        for(i=0;i<240;i++){
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","1_U_level_sup_step#",draw_step);
+      draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
+    }
 
  
-    smooth_1(mgrid, size-1, operators);
-    sprintf(aux,"%s_%d","U_level_sup_post_smooth_step",1);
-    //draw_triangle(mgrid[size-1], size-1, U, edge_u,aux);
-
     /* Compute the defect u_m, f_m -> v_m*/
     compute_defect(mgrid, size-1, operators);
-    sprintf(aux,"%s_%d","V_level_sup_defect_step",2);
-    //draw_triangle(mgrid[size-1], size-1, V, edge_u,aux);
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","2_V(defect)_level_sup_step#",draw_step);
+      draw_triangle(mgrid[size-1], size-1, V, edge_v,aux);
+    }
 
 
     /* Restrict the defect v_m -> f_m-1 */
     initialize_grid(mgrid[size-2],size-2,0.0);
     restrict_one(mgrid, size-1);
-    sprintf(aux,"%s_%d","F_level_inf_defect_step",3);
-    //draw_triangle(mgrid[size-2], size-2, F, edge_u,aux);
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","3_F(restricted)_level_inf_step#",draw_step);
+      draw_triangle(mgrid[size-2], size-2, F, edge_v,aux);
+    }
 
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
-    for(j=0;j<10000;j++){
+    for(j=0;j<1000;j++){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
@@ -389,18 +393,37 @@ void run_test(){
         i,max_of_triangle(mgrid[size-2],V,size-2));
     printf("\t\t[INFO] iter %d: max value u level down=%e\n",
         i,max_of_triangle(mgrid[size-2],U,size-2));
-
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","4_U(solution)_level_inf_step#",draw_step);
+      draw_triangle(mgrid[size-2], size-2, U, edge_v,aux);
+    }
 
 
 
     /* Interpolate u_m-1 -> v_m */
     interpolate_linear(mgrid,size-2);
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","5_V(interpolation)_level_sup_step#",draw_step);
+      draw_triangle(mgrid[size-1], size-1, V, edge_v,aux);
+    }
+
+
 
     /* Corrected solution u_m, v_m -> u_m */
     correct_one(mgrid, size-1);
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","6_U(corrected)_level_sup_step#",draw_step);
+      draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
+    }
+
+
 
     /* Post-smooth u_m, f_m -> u_m */
-    //smooth_1(mgrid, size-1, operators);
+    smooth_1(mgrid, size-1, operators);
+    if(i==draw_step){
+      sprintf(aux,"%s_%d","7_U(postsmooth)_level_sup_step#",draw_step);
+      draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
+    }
 
     /* Compute the defect to check u_m, f_m -> v_m */
     compute_defect(mgrid, size-1, operators);
@@ -624,7 +647,7 @@ void test_restrict(){
   triangle *** mgrid;
   int size=7;
   mgrid=allocate_multigrid(size);
-  initialize_multigrid(mgrid,size,9.0);
+  initialize_grid_function_v_random(mgrid[size-1],size-1);
   initialize_grid(mgrid[size-2],size-2,0.0);
   draw_triangle(mgrid[size-1],size-1,V,edge_u,"V, edge_u level Up");
   draw_triangle(mgrid[size-1],size-1,V,edge_v,"V, edge_v level Up");

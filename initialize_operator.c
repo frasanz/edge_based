@@ -96,7 +96,7 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
                             {       0, 2.0/3.0,       0}}};
 
     _operator rot_rot_uu={{{   0,   0,   0},\
-                           {   0, 8.0,   0},\
+                             {   0, 8.0,   0},\
                            {   0,   0,   0}}};
 
     _operator rot_rot_uv={{{   0,   0,   0},\

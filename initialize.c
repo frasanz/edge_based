@@ -129,6 +129,18 @@ void initialize_grid_function_u_random(triangle **grid, int level){
     }
   }
 }
+void initialize_grid_function_v_random(triangle **grid, int level){
+  int i,j,k;
+  // generate different seed for random number                                     
+  for(i=0; i<pow(2,level);i++){
+    for(j=0;j<pow(2,level)-i;j++){
+      for(k=0;k<3;k++){
+        grid[i][j].function_v[k]= rand();
+      }
+    }
+  }
+}
+
 void initialize_grid_function_u_random2(triangle **grid, int level){
   int i,j,k;
   // generate different seed for random number                                     
@@ -140,6 +152,19 @@ void initialize_grid_function_u_random2(triangle **grid, int level){
     }
   }
 }
+void initialize_grid_function_v_random2(triangle **grid, int level){
+  int i,j,k;
+  // generate different seed for random number                                     
+  for(i=0; i<pow(2,level);i++){
+    for(j=0;j<pow(2,level)-i;j++){
+      for(k=0;k<3;k++){
+        grid[i][j].function_v[k]= sin(i+10*j+100+k);
+      }
+    }
+  }
+}
+
+
 
 
 

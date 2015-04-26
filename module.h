@@ -20,5 +20,6 @@
 #define _MODULE_H_
 
 double max_of_triangle(triangle ** tri, int element, int level);
+double max_of_triangle_by_edge(triangle ** tri, int element, int level, int edge);
 
 #endif

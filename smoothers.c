@@ -49,7 +49,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
       }
       mgrid[level][i][j].function_u[edge_v]=
         (mgrid[level][i][j].function_f[edge_v]*h2
-         -(temp0+temp1+temp2))/oper[0][vv].op[1][1];
+        -(temp0+temp1+temp2))/oper[0][vv].op[1][1];
     }
   }
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
@@ -100,7 +100,7 @@ void smooth_1_parallel(triangle *** mgrid, int level, _operator ** oper){
   /* V */
 
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
-    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
+    for(j=1;j<(int)(pow(2,level)-i);j++){ // For all columns
       for(l=0;l<3;l++)
         temp[l]=0.0;
       for(l=0;l<3;l++){

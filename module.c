@@ -24,6 +24,7 @@
 double max_of_triangle(triangle ** tri, int element, int level){
   int i,j,k;
   double max=0.0;
+  int inedge=9;
   for(i=1;i<pow(2,level)-1;i++){
       for(j=1;j<pow(2,level)-i-1;j++){
       for(k=0;k<3;k++){
@@ -31,11 +32,13 @@ double max_of_triangle(triangle ** tri, int element, int level){
         if(element==U){
           if(max<fabs(tri[i][j].function_u[k])){
             max=fabs(tri[i][j].function_u[k]);
+            inedge=k;
           }
         } else if(element == V){
           if(max<fabs(tri[i][j].function_v[k])){
             //printf("V %d %d %d %e\n",i,j,k,fabs(tri[i][j].function_v[k]));
             max=fabs(tri[i][j].function_v[k]);
+            inedge=k;
           }
           else{
             //printf("\tV %d %d %d %e\n",i,j,k,fabs(tri[i][j].function_v[k]));
@@ -52,7 +55,33 @@ double max_of_triangle(triangle ** tri, int element, int level){
       }
     }
   }
+  //printf("Max found in edge %d\n",inedge);
   return max;
 }
 
-
+double max_of_triangle_by_edge(triangle ** tri, int element, int level, int edge){
+  int i,j,k;
+  double max=0.0;
+  for(i=1;i<pow(2,level)-1;i++){
+    for(j=1;j<pow(2,level)-i-1;j++){
+      if(element==U){
+        if(max<fabs(tri[i][j].function_u[edge])){
+          max=fabs(tri[i][j].function_u[edge]);
+        }
+      } else if(element == V){
+        if(max<fabs(tri[i][j].function_v[edge])){
+          max=fabs(tri[i][j].function_v[edge]);
+        }
+        else{
+        }
+      } else if(element == F){
+        if(max<fabs(tri[i][j].function_f[edge])){
+          max=fabs(tri[i][j].function_f[edge]);
+        }
+        else{
+        }
+      }
+    }
+  }
+  return max;
+}
