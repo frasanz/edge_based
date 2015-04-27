@@ -6,10 +6,10 @@ LIBS=-lm -llapack -lblas
 all: edge_based
 edge_based: edge_based.c memory.o initialize.o screen.o test.o initialize_operator.o \
 	module.o smoothers.o defect.o restrict.o interpolation.o correct.o onlysmooth.o \
-	draw.o
+	draw.o exact.o
 	$(CC) $(DEFS) edge_based.c initialize.o memory.o screen.o test.o \
 		initialize_operator.o module.o smoothers.o defect.o restrict.o \
-		interpolation.o correct.o onlysmooth.o draw.o -o edge_based  $(LIBS)
+		interpolation.o correct.o onlysmooth.o draw.o exact.o -o edge_based  $(LIBS)
 
 memory.o: memory.c
 	$(CC) $(DEFS) -c memory.c -o memory.o $(LIBS)
@@ -49,6 +49,9 @@ onlysmooth.o: onlysmooth.c
 
 draw.o: draw.c
 	$(CC) $(DEFS) -c draw.c -o draw.o $(LIBS)
+
+exact.o: exact.c
+	$(CC) $(DEFS) -c exact.c -o exact.o $(LIBS)
                                                                                      
 clean:                                                                               
 	rm -f *.o *.temp *.out edge_based

@@ -16,8 +16,8 @@
  * =====================================================================================
  */
 
-#ifndef _TEST_H_
-#define _TEST_H_
+#ifndef __TEST_H_
+#define __TEST_H_
 
 void run_test();
 void multigrid_two();

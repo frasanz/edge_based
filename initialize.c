@@ -167,9 +167,6 @@ void initialize_grid_function_v_random2(triangle **grid, int level){
 
 
 
-
-
-
 /* Note, we're initializing boundary only in function_u */
 void initialize_boundary(triangle **grid, int level, double value,int element){
   int i,j;

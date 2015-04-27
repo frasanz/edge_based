@@ -385,7 +385,7 @@ void run_test(){
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
-    for(j=0;j<1000;j++){
+    for(j=0;j<10000;j++){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
@@ -396,6 +396,8 @@ void run_test(){
     if(i==draw_step){
       sprintf(aux,"%s_%d","4_U(solution)_level_inf_step#",draw_step);
       draw_triangle(mgrid[size-2], size-2, U, edge_v,aux);
+      sprintf(aux,"%s_%d","4.5_V(defect)_level_inf_step#",draw_step);
+      draw_triangle(mgrid[size-2], size-2, V, edge_v,aux);
     }
 
 

@@ -28,6 +28,7 @@
 #include "helper.h"
 #include "onlysmooth.h"
 #include "draw.h"
+#include "exact.h"
 
 
 #define SIZE 4
@@ -83,6 +84,10 @@ int main(int argc, char **argv){
   } else if(checkCmdLineFlag(argc, (const char **)argv, "test_interpolate_linear")){
     printf("\t[INFO] Calling test_interpolate_linear\n\n");
     test_interpolate_linear();
+    return 0;
+  } else if(checkCmdLineFlag(argc, (const char **)argv, "test_exact")){
+    printf("/t[INFO] Calling test_exact\n\n");
+    test_exact();
     return 0;
   }
   else{
