@@ -1,6 +1,6 @@
 CXX=g++
 CC=gcc
-DEFS=-Wall -O3 -fopenmp
+DEFS=-Wall -g -fopenmp
 LIBS=-lm -llapack -lblas
                       
 all: edge_based

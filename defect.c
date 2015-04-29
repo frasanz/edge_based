@@ -40,8 +40,9 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
          temp2=temp2+oper[level][uw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_v[edge_u]=
-        mgrid[level][i][j].function_f[edge_u]-(temp0+temp1+temp2);
+      //printf("u-%d %d=%f-%f\n",i,j,mgrid[level][i][j].function_f[edge_u],temp0+temp1+temp2);
+
+      mgrid[level][i][j].function_v[edge_u]=(mgrid[level][i][j].function_f[edge_u]-(temp0+temp1+temp2));
     }
   }
   /* defect in edge v */
@@ -57,8 +58,9 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
          temp2=temp2+oper[level][vw].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_v[edge_v]=
-        mgrid[level][i][j].function_f[edge_v]-(temp0+temp1+temp2);
+      //printf("v-%d %d=%f-%f\n",i,j,mgrid[level][i][j].function_f[edge_v],temp0+temp1+temp2);
+
+      mgrid[level][i][j].function_v[edge_v]=(mgrid[level][i][j].function_f[edge_v]-(temp0+temp1+temp2));
     }
   }
   /* defect in edge w */
@@ -74,8 +76,8 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
           temp2=temp2+oper[level][ww].op[l][m]*mgrid[level][i+1-l][j-1+m].function_u[edge_w];
         }
       }
-      mgrid[level][i][j].function_v[edge_w]=
-        mgrid[level][i][j].function_f[edge_w]-(temp0+temp1+temp2);
+      //printf("w-%d %d=%f-%f\n",i,j,mgrid[level][i][j].function_f[edge_w],temp0+temp1+temp2);
+      mgrid[level][i][j].function_v[edge_w]=(mgrid[level][i][j].function_f[edge_w]-(temp0+temp1+temp2));
     }
   }
 }

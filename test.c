@@ -306,9 +306,9 @@ void run_test(){
 
   void multigrid_two(){
     int triangles_alloc=0;
-    int size=6;
-      int i,j;
-      triangle *** mgrid;
+    int size=7;
+    int i,j;
+    triangle *** mgrid;
     _operator ** operators;
     FILE *f;
     double defect_ant=1.0;
@@ -358,8 +358,8 @@ void run_test(){
   /* Pre-smooth u_m, f_m -> u_m */
 
 
-  int draw_step=199;
-        for(i=0;i<240;i++){
+  int draw_step=9;
+  for(i=0;i<10;i++){
     if(i==draw_step){
       sprintf(aux,"%s_%d","1_U_level_sup_step#",draw_step);
       draw_triangle(mgrid[size-1], size-1, U, edge_v,aux);
@@ -385,7 +385,7 @@ void run_test(){
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
-    for(j=0;j<10000;j++){
+    for(j=0;j<100;j++){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
