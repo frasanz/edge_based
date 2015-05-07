@@ -30,9 +30,19 @@ void initialize_grid(triangle **grid, int level, int value){
       grid[i][j].function_u[edge_v]=1.0*value;
       grid[i][j].function_u[edge_w]=1.0*value;
 
+      grid[i][j].function_u_int[edge_u]=1.0*value;
+      grid[i][j].function_u_int[edge_v]=1.0*value;
+      grid[i][j].function_u_int[edge_w]=1.0*value;
+
       grid[i][j].function_v[edge_u]=1.0*value;
       grid[i][j].function_v[edge_v]=1.0*value;
       grid[i][j].function_v[edge_w]=1.0*value;
+
+      grid[i][j].function_v_int[edge_u]=1.0*value;
+      grid[i][j].function_v_int[edge_v]=1.0*value;
+      grid[i][j].function_v_int[edge_w]=1.0*value;
+
+
 
       grid[i][j].function_f[edge_u]=1.0*value;
       grid[i][j].function_f[edge_v]=1.0*value;

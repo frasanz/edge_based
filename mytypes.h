@@ -21,6 +21,7 @@
 #define U 0
 #define V 1
 #define F 2
+#define VINT 4
 
 #define edge_u 0 
 #define edge_v 1
@@ -40,7 +41,8 @@ typedef struct {
   double function_u[3];
   double function_v[3];
   double function_f[3];
-  double function_ub[3];
+  double function_u_int[3];
+  double function_v_int[3];
 } triangle;
 
 typedef struct {

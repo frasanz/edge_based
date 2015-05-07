@@ -24,5 +24,8 @@
 
 void compute_defect(triangle *** mgrid, int level, _operator ** oper);
 
+void compute_defect2(triangle *** mgrid, int level, _operator ** oper);
+
+
 #endif
 
