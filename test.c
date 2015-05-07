@@ -326,7 +326,7 @@ void run_test(){
       /* Calculating the memory needed */
     for(i=0;i<size;i++)
       triangles_alloc=triangles_alloc+3*(pow(2,i)*(pow(2,i)+1)/2);
-    printf("\t[INFO] We will need %fMB for this test\n\n",
+      printf("\t[INFO] We will need %fMB for this test\n\n",
         1.0*triangles_alloc*sizeof(triangle)/1024/1024);
 
     /* Initializing operators */
@@ -359,21 +359,31 @@ void run_test(){
   /* Pre-smooth u_m, f_m -> u_m */
 
 
-  int draw_step=21;
+  int draw_step=3;
   for(i=0;i<20;i++){
 
     /* Smooth */
     smooth_1(mgrid, size-1, operators);
     compute_defect(mgrid, size-1, operators);
     printf("\titer %d, post smooth defect=%e\n",i,max_of_triangle(mgrid[size-1],V,size-1));
+    if(i==draw_step){
+      draw_triangle(mgrid[size-1],size-1,V,edge_u,"1 post smooth defect u");
+      draw_triangle(mgrid[size-1],size-1,V,edge_v,"1 post smooth defect v");
+      draw_triangle(mgrid[size-1],size-1,V,edge_w,"1 post smooth defect w");
+
+    }
 
     /* Restrict the defect v_m -> f_m-1 */
     initialize_grid(mgrid[size-2],size-2,0.0);
     restrict_one(mgrid, size-1);
     compute_defect(mgrid, size-2, operators);
     printf("\titer %d, post restri defect=%e\n",i,max_of_triangle(mgrid[size-2],V,size-2));
+    if(i==draw_step){
+      draw_triangle(mgrid[size-2],size-2,V,edge_u,"2 post restrict defect u");
+      draw_triangle(mgrid[size-2],size-2,V,edge_v,"2 post restrict defect v");
+      draw_triangle(mgrid[size-2],size-2,V,edge_w,"2 post restrict  defect w");
 
-
+    }
 
     /* Compute the solution in the lowest level -> u_m-1,
      * in this case we're going to do 10 iteration of the 
@@ -383,7 +393,13 @@ void run_test(){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
-    printf("\titer %d, defect down=%e\n",i, max_of_triangle(mgrid[size-2],V,size-2));
+    if(i==draw_step){
+      draw_triangle(mgrid[size-2],size-2,V,edge_u,"3 post smoth down defect u");
+      draw_triangle(mgrid[size-2],size-2,V,edge_v,"3 post smoth down defect v");
+      draw_triangle(mgrid[size-2],size-2,V,edge_w,"3 post smooth down defect w");
+
+    }
+
 
 
     /* Interpolate u_m-1 -> u_int_m */
@@ -396,6 +412,18 @@ void run_test(){
     correct_one(mgrid,size-1);
     compute_defect(mgrid, size-1, operators);
     printf("\titer %d, after correct=%e\n",i, max_of_triangle(mgrid[size-1],V,size-1));
+    if(i==draw_step){
+      draw_triangle(mgrid[size-1],size-1,V,edge_u,"4 post correct down defect u");
+      draw_triangle(mgrid[size-1],size-1,V,edge_v,"4 post correct down defect v");
+      draw_triangle(mgrid[size-1],size-1,V,edge_w,"4 post correct down defect w");
+
+    }
+
+
+
+
+
+
 
 
     /* Compute the defect to check u_m, f_m -> v_m */
@@ -407,6 +435,13 @@ void run_test(){
     defect=max_of_triangle(mgrid[size-1],V,size-1);
     printf("\t[INFO] iter %d: maximum value in last function_v(u,v,w) %e, ratio=%f\n",
           i,defect, defect/defect_ant);
+    if(i==draw_step){
+      draw_triangle(mgrid[size-1],size-1,V,edge_u,"5 post smooth defect u");
+      draw_triangle(mgrid[size-1],size-1,V,edge_v,"5 post smooth defect v");
+      draw_triangle(mgrid[size-1],size-1,V,edge_w,"5 post smooth defect w");
+    }
+
+
   }
   fclose(f);
 }

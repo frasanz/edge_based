@@ -48,12 +48,12 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
       //printf("smoothu-%d %d=%f %f\n",i,j,mgrid[level][i][j].function_f[edge_u],temp0+temp1+temp2) ;
 
 
-      mgrid[level][i][j].function_u[edge_u]=mgrid[level][i][j].function_u[edge_u]+
-        (mgrid[level][i][j].function_f[edge_u]
+      mgrid[level][i][j].function_u[edge_u]=
+        mgrid[level][i][j].function_u[edge_u]
+        +(mgrid[level][i][j].function_f[edge_u]
             -(temp0+temp1+temp2))/oper[level][uu].op[1][1];
     }
   }
-
 
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
     for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
@@ -74,6 +74,9 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
           -(temp0+temp1+temp2))/oper[level][vv].op[1][1];
     }
   }
+
+
+
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
     for(j=1;j<(int)pow(2,level)-i-1;j++){ // For all columns
       temp0=0.0;
@@ -93,6 +96,7 @@ void smooth_1(triangle *** mgrid, int level, _operator ** oper){
          -(temp0+temp1+temp2))/oper[level][ww].op[1][1];
     }
   }
+
 }
 
 /* TODO: This is not parallel right now 01/04/15 */

@@ -35,7 +35,7 @@
 #include "draw.h"
 
 void onlysmooth(){
-      int size=6;
+      int size=7;
       int i;
       double def=1.0;
       double def_ant=1.0;
@@ -49,7 +49,7 @@ void onlysmooth(){
       initialize_multigrid(mgrid,size,0);
 
       /* Initialize las grid, function_u with random value */
-      initialize_grid_function_value(mgrid[size-1],size-1,2.0,U);
+      initialize_grid_function_value(mgrid[size-1],size-1,0.1,U);
 
       /* Only for testing  */
       initialize_grid_function_value(mgrid[size-1],size-1,0.000,F);
@@ -62,13 +62,28 @@ void onlysmooth(){
       operators=allocate_operators("-grad(div)+curl(rot)",size);
       initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-      for(i=0;i<20;i++){
+      for(i=0;i<21;i++){
         smooth_1(mgrid, size-1, operators);
         compute_defect(mgrid,size-1, operators);
+        if(i==0){
+        draw_triangle(mgrid[size-1],size-1,U,edge_u,"u");
+        draw_triangle(mgrid[size-1],size-1,U,edge_v,"v");
+        draw_triangle(mgrid[size-1],size-1,U,edge_w,"w");
+        }
         def_ant=def;
         def=max_of_triangle(mgrid[size-1],V,size-1);
-        printf("\t [ITER#%d] function_v max=%e ratio=%f\n",
-          i,def,def/def_ant);
+        printf("\t [ITER#%d] function_v max_u=%e, max_v=%e, max_w=%e, max=%e ratio=%f\n",
+          i,
+          max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_u),
+          max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_v),
+          max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_w),
+          def,def/def_ant);
+        if(i==1000){
+          draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect u");
+          draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect v");
+          draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect w");
+        }
+
       }
  
   free_multigrid(mgrid,size);
