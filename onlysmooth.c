@@ -35,7 +35,7 @@
 #include "draw.h"
 
 void onlysmooth(){
-      int size=7;
+      int size=5;
       int i;
       double def=1.0;
       double def_ant=1.0;
@@ -49,10 +49,11 @@ void onlysmooth(){
       initialize_multigrid(mgrid,size,0);
 
       /* Initialize las grid, function_u with random value */
-      initialize_grid_function_value(mgrid[size-1],size-1,0.1,U);
+      initialize_grid_function_value(mgrid[size-1],size-1,0.0,U);
+      //initialize_grid_function_u_random(mgrid[size-1],size-1);
 
       /* Only for testing  */
-      initialize_grid_function_value(mgrid[size-1],size-1,0.000,F);
+      initialize_grid_function_value(mgrid[size-1],size-1,0.100,F);
       /* Initializing the boundary in the function_u */
       initialize_boundary(mgrid[size-1],size-1,0.0,U);
 
@@ -62,7 +63,7 @@ void onlysmooth(){
       operators=allocate_operators("-grad(div)+curl(rot)",size);
       initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-      for(i=0;i<21;i++){
+      for(i=0;i<9999;i++){
         smooth_1(mgrid, size-1, operators);
         compute_defect(mgrid,size-1, operators);
         if(i==0){
@@ -78,7 +79,7 @@ void onlysmooth(){
           max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_v),
           max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_w),
           def,def/def_ant);
-        if(i==1000){
+        if(i==100000){
           draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect u");
           draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect v");
           draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect w");

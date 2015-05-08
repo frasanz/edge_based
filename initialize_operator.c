@@ -55,7 +55,7 @@ void initialize_operator(_operator  * oper, const char * problem, int size){
 
   int i,j;
   double inv_l=1.0/(pow(2,size));
-  double inv_l2=(inv_l*inv_l);
+  double inv_l2=1/(inv_l*inv_l);
 
   if(strcmp(problem,"-grad(div)+curl(rot)")==0){
     printf("-grad(div)+curl(rot)\n");

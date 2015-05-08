@@ -218,7 +218,7 @@ void run_test(){
   }
   free_multigrid(mgrid,size);
 
-  size=5;
+  size=6;
   printf("\t[TEST#8] Initializing operators: -grad(div)+curl(rot) up to size %d\n",
       size);
   operators=allocate_operators("-grad(div)+curl(rot)",size);
@@ -359,7 +359,7 @@ void run_test(){
   /* Pre-smooth u_m, f_m -> u_m */
 
 
-  int draw_step=3;
+  int draw_step=23;
   for(i=0;i<20;i++){
 
     /* Smooth */
@@ -389,7 +389,7 @@ void run_test(){
      * in this case we're going to do 10 iteration of the 
      * smoothing procedure, starting with a random value */
 
-    for(j=0;j<400;j++){
+    for(j=0;j<10000;j++){
       smooth_1(mgrid,size-2,operators);
     }
     compute_defect(mgrid, size-2, operators);
@@ -418,17 +418,7 @@ void run_test(){
       draw_triangle(mgrid[size-1],size-1,V,edge_w,"4 post correct down defect w");
 
     }
-
-
-
-
-
-
-
-
     /* Compute the defect to check u_m, f_m -> v_m */
-
-   smooth_1(mgrid, size-1, operators);
 
     compute_defect(mgrid, size-1, operators);
     defect_ant=defect;
