@@ -63,13 +63,21 @@ void onlysmooth(){
       operators=allocate_operators("-grad(div)+curl(rot)",size);
       initialize_operators(operators,"-grad(div)+curl(rot)",size);
 
-      for(i=0;i<9999;i++){
-        smooth_1(mgrid, size-1, operators);
+      int draw_step=0;
+      for(i=0;i<1;i++){
         compute_defect(mgrid,size-1, operators);
-        if(i==0){
-        draw_triangle(mgrid[size-1],size-1,U,edge_u,"u");
-        draw_triangle(mgrid[size-1],size-1,U,edge_v,"v");
-        draw_triangle(mgrid[size-1],size-1,U,edge_w,"w");
+        if(i==draw_step){
+          draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect random u");
+          draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect random v");
+          draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect random w");
+        }
+
+        smooth_2(mgrid, size-1, operators);
+        compute_defect(mgrid,size-1, operators);
+        if(i==draw_step){
+        draw_triangle(mgrid[size-1],size-1,U,edge_u,"sol u");
+        draw_triangle(mgrid[size-1],size-1,U,edge_v,"sol v");
+        draw_triangle(mgrid[size-1],size-1,U,edge_w,"sol w");
         }
         def_ant=def;
         def=max_of_triangle(mgrid[size-1],V,size-1);
@@ -79,14 +87,12 @@ void onlysmooth(){
           max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_v),
           max_of_triangle_by_edge(mgrid[size-1],V,size-1,edge_w),
           def,def/def_ant);
-        if(i==100000){
+        if(i==draw_step){
           draw_triangle(mgrid[size-1],size-1,V,edge_u,"defect u");
           draw_triangle(mgrid[size-1],size-1,V,edge_v,"defect v");
           draw_triangle(mgrid[size-1],size-1,V,edge_w,"defect w");
         }
-
       }
- 
   free_multigrid(mgrid,size);
 }
 

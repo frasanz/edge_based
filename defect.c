@@ -65,7 +65,7 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
     }
   }
   for(i=1;i<(int)(pow(2,level)-1);i++){ // For all files, interior points
-    for(j=1;j<(int)pow(2,level)-i-1;j++){ // For all columns
+    for(j=1;j<(int)(pow(2,level)-i-1);j++){ // For all columns
       temp0=0.0;
       temp1=0.0;
       temp2=0.0;
@@ -79,9 +79,9 @@ void compute_defect(triangle*** mgrid, int level, _operator** oper){
       mgrid[level][i][j].function_v[edge_w]=
         (mgrid[level][i][j].function_f[edge_w]
          -(temp0+temp1+temp2));
+
     }
   }
-
 }
 void compute_defect2(triangle*** mgrid, int level, _operator** oper){
   int i,j,l,m;

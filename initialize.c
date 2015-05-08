@@ -134,7 +134,7 @@ void initialize_grid_function_u_random(triangle **grid, int level){
   for(i=0; i<pow(2,level);i++){
     for(j=0;j<pow(2,level)-i;j++){
       for(k=0;k<3;k++){
-        grid[i][j].function_u[k]= rand();
+        grid[i][j].function_u[k]= (double)rand() / (double)RAND_MAX ;
       }
     }
   }

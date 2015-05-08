@@ -345,8 +345,8 @@ void run_test(){
 
     /* Initializing las grid function_u random */
     printf("\t[INFO] Initializing last grid function_u random\n");
-    //initialize_grid_function_u_random2(mgrid[size-1],size-1);
-    initialize_grid_function_value(mgrid[size-1],size-1,2.0,U);
+    initialize_grid_function_u_random(mgrid[size-1],size-1);
+    //initialize_grid_function_value(mgrid[size-1],size-1,2.0,U);
 
     /* Initializing the boundary in the function_u */
     printf("\t[INFO] Boundary=%d in funcion_u, (level %d)\n",0,size);
@@ -359,8 +359,11 @@ void run_test(){
   /* Pre-smooth u_m, f_m -> u_m */
 
 
-  int draw_step=233333;
-  for(i=0;i<200;i++){
+  int draw_step=24;
+  for(i=0;i<25;i++){
+
+    /* Initialize v=0 */
+    initialize_grid_function_value(mgrid[size-1],size-1,0.0,V);
 
     /* Smooth */
     smooth_1(mgrid, size-1, operators);

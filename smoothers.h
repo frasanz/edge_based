@@ -22,9 +22,8 @@
 #include "mytypes.h"
 
 void smooth_1(triangle ***, int level, _operator ** oper);
+void smooth_2(triangle ***, int level, _operator ** oper);
 void smooth_1_parallel(triangle ***, int level, _operator ** oper);
 void smooth_gaussseidel(triangle ***mgrid, int level, _operator ** oper);
-
-
 
 #endif
