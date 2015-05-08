@@ -49,11 +49,11 @@ void onlysmooth(){
       initialize_multigrid(mgrid,size,0);
 
       /* Initialize las grid, function_u with random value */
-      initialize_grid_function_value(mgrid[size-1],size-1,0.0,U);
-      //initialize_grid_function_u_random(mgrid[size-1],size-1);
+      //initialize_grid_function_value(mgrid[size-1],size-1,0.0,U);
+      initialize_grid_function_u_random(mgrid[size-1],size-1);
 
       /* Only for testing  */
-      initialize_grid_function_value(mgrid[size-1],size-1,0.100,F);
+      initialize_grid_function_value(mgrid[size-1],size-1,0.00,F);
       /* Initializing the boundary in the function_u */
       initialize_boundary(mgrid[size-1],size-1,0.0,U);
 
